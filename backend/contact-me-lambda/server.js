@@ -16,30 +16,28 @@ app.post('/contact', async (req, res) => {
     const { name, email, message } = req.body;
     console.log('Received contact form submission:', { name, email, message });
     const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS,
-        },
+      host: 'smtp.mailgun.org',
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
     });
-    console.log('Transporter created with user:', process.env.EMAIL_USER);
+
     // Email to you
     const mailOptions = {
-        from: `Portfolio Contact <${process.env.EMAIL_USER}>`,
-        to: process.env.EMAIL_USER,
+        from: `Portfolio Contact <${process.env.FROM_ADDRESS}>`,
+        to: process.env.FROM_ADDRESS,
         subject: 'New Contact Form Submission',
         text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
     };
 
     try {
-        console.log('Sending email to:', process.env.EMAIL_USER);
         await transporter.sendMail(mailOptions);
-        console.log('Email sent successfully to:', process.env.EMAIL_USER);
         // Confirmation email to user
         const confirmationMailOptions = {
-            from: `Shravankumar Nagarajan <${process.env.EMAIL_USER}>`,
+            from: `Shravankumar Nagarajan <${process.env.FROM_ADDRESS}>`,
             to: email,
             subject: "I've received your message!",
             html: `

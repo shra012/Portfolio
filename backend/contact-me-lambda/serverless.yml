@@ -9,8 +9,9 @@ provider:
   runtime: nodejs20.x
   timeout: 30 
   environment:
-    EMAIL_USER: ${env:EMAIL_USER}
-    EMAIL_PASS: ${env:EMAIL_PASS}
+    SES_FROM_ADDRESS: ${env:FROM_ADDRESS}
+    SES_USER: ${env:EMAIL_USER}
+    SES_PASS: ${env:EMAIL_PASS}
 
 functions:
   api:
