@@ -15,34 +15,41 @@ const Navbar = () => {
   const navigate = useNavigate();
   
   const handleNavigation = (nav) => {
+    console.log('Navigation clicked:', nav);
     setActive(nav.title);
     
     if (nav.url) {
       // External route navigation
+      console.log('Navigating to route:', nav.url);
       navigate(nav.url);
       window.scrollTo(0, 0);
     } else {
       // Internal section navigation
+      console.log('Scrolling to section:', nav.id);
       if (location.pathname !== "/") {
         // If not on home page, navigate to home first then scroll to section
         navigate("/");
         // Use a longer timeout to ensure page loads before scrolling
         setTimeout(() => {
           const element = document.getElementById(nav.id);
+          console.log('Element found:', element);
           if (element) {
             element.scrollIntoView({ behavior: 'smooth' });
-            // Update URL hash after navigation
-            window.location.hash = nav.id;
+          } else {
+            console.warn('Element not found:', nav.id);
           }
-        }, 300);
+        }, 500);
       } else {
-        // Already on home page, just scroll to section and update hash
-        const element = document.getElementById(nav.id);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-          // Update URL hash without reloading
-          window.location.hash = nav.id;
-        }
+        // Already on home page, just scroll to section
+        setTimeout(() => {
+          const element = document.getElementById(nav.id);
+          console.log('Element found on same page:', element);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          } else {
+            console.warn('Element not found on same page:', nav.id);
+          }
+        }, 100);
       }
     }
   };
