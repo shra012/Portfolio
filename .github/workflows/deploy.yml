@@ -1,3 +1,6 @@
+permissions:
+  contents: write
+  pages: write
 name: Deploy Frontend to GitHub Pages
 
 on:
@@ -25,7 +28,7 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build frontend
         run: npm run build
