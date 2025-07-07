@@ -53,7 +53,7 @@ const About = () => {
       </motion.p>
 
       <motion.a
-        href="/Shravankumar_Nagarajan_Resume.pdf"
+        href={`${import.meta.env.BASE_URL}Shravankumar_Nagarajan_Resume.pdf`}
         download
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
