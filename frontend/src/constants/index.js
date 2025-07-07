@@ -81,7 +81,7 @@ const services = [
     link: "https://github.com/shra012",
   },
   {
-    title: "Mechanical Engineer",
+    title: "LinkedIn",
     icon: creator,
     link: "https://www.linkedin.com/in/shravan-kumar12",
   },

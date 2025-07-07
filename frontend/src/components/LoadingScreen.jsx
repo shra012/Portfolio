@@ -23,7 +23,6 @@ const LoadingScreen = () => {
     const [currentJoke, setCurrentJoke] = useState(0);
 
     useEffect(() => {
-        console.log("LoadingScreen useEffect mounted");
         const timer = setInterval(() => {
             setProgress((prevProgress) => {
                 if (prevProgress >= 100) {
@@ -40,19 +39,15 @@ const LoadingScreen = () => {
                 do {
                     newJokeIndex = Math.floor(Math.random() * techJokes.length);
                 } while (newJokeIndex === prev);
-                console.log("Joke changed to index:", newJokeIndex, techJokes[newJokeIndex]);
                 return newJokeIndex;
             });
         }, 2000); // Change joke every 2 seconds
 
         return () => {
-            console.log("LoadingScreen useEffect unmounted");
             clearInterval(timer);
             clearInterval(jokeTimer);
         };
     }, []);
-
-    console.log("Current joke for render:", techJokes[currentJoke]);
 
     return (
         <div className="fixed inset-0 bg-black flex flex-col items-center justify-center z-50 font-mono">
