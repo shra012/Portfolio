@@ -1,0 +1,31 @@
+# dependencies
+frontend/node_modules
+backend/node_modules
+
+# environment variables
+.env
+.env.*
+
+# testing
+/coverage
+
+# production
+/build
+/dist
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+logs
+*.log

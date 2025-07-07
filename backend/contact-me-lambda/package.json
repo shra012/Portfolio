@@ -1,0 +1,19 @@
+{
+  "name": "contact-me-lambda",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node lambda.js",
+    "dev": "serverless offline"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.0.1",
+    "express": "^4.21.2",
+    "nodemailer": "^7.0.4",
+    "serverless-http": "^3.2.0"
+  },
+  "devDependencies": {
+    "serverless-offline": "^14.4.0"
+  }
+}

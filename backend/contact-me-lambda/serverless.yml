@@ -1,0 +1,30 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: shra012
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: contact-me-lambda
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  timeout: 30 
+  environment:
+    EMAIL_USER: ${env:EMAIL_USER}
+    EMAIL_PASS: ${env:EMAIL_PASS}
+
+functions:
+  api:
+    handler: lambda.handler
+    events:
+      - http:
+          path: contact
+          method: post
+          cors: true
+custom:
+  serverless-offline:
+    noTimeout: true
+    httpPort: 3000
+    reloadHandler: true
+
+plugins:
+  - serverless-offline
