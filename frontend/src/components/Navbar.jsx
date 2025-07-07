@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { styles } from "../styles";
 import { navLinks as baseNavLinks } from "../constants";
@@ -12,7 +12,41 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const { user, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   
+  const handleNavigation = (nav) => {
+    setActive(nav.title);
+    
+    if (nav.url) {
+      // External route navigation
+      navigate(nav.url);
+      window.scrollTo(0, 0);
+    } else {
+      // Internal section navigation
+      if (location.pathname !== "/") {
+        // If not on home page, navigate to home first then scroll to section
+        navigate("/");
+        // Use a longer timeout to ensure page loads before scrolling
+        setTimeout(() => {
+          const element = document.getElementById(nav.id);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+            // Update URL hash after navigation
+            window.location.hash = nav.id;
+          }
+        }, 300);
+      } else {
+        // Already on home page, just scroll to section and update hash
+        const element = document.getElementById(nav.id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+          // Update URL hash without reloading
+          window.location.hash = nav.id;
+        }
+      }
+    }
+  };
+
   let navLinks = [...baseNavLinks];
 
   if (location.pathname === "/feedback") {
@@ -41,6 +75,28 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Handle hash navigation on page load
+  useEffect(() => {
+    if (location.pathname === "/") {
+      const hash = window.location.hash;
+      if (hash) {
+        const elementId = hash.replace('#', '');
+        // Increased timeout to ensure all components are loaded
+        setTimeout(() => {
+          const element = document.getElementById(elementId);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+            // Update active state based on hash
+            const navLink = baseNavLinks.find(link => link.id === elementId);
+            if (navLink) {
+              setActive(navLink.title);
+            }
+          }
+        }, 500);
+      }
+    }
+  }, [location.pathname]);
+
   return (
     <nav
       className={`${styles.paddingX
@@ -65,33 +121,17 @@ const Navbar = () => {
 
         <ul className='list-none hidden sm:flex flex-row gap-10'>
           {navLinks.map((nav) => (
-            nav.url ? (
-              <li
-                key={nav.id}
-                className={`
-                  ${active === nav.title ? "text-white" : "text-secondary"} 
-                  hover:text-white 
-                  text-[18px] font-medium cursor-pointer transition-colors duration-300
-                `}
-                onClick={() => setActive(nav.title)}
-              >
-                <Link to={nav.url} onClick={() => window.scrollTo(0, 0)}>
-                  {nav.title}
-                </Link>
-              </li>
-            ) : (
-              <li
-                key={nav.id}
-                className={`
-                  ${active === nav.title ? "text-white" : "text-secondary"} 
-                  hover:text-white 
-                  text-[18px] font-medium cursor-pointer
-                `}
-                onClick={() => setActive(nav.title)}
-              >
-                <a href={`#${nav.id}`}>{nav.title}</a>
-              </li>
-            )
+            <li
+              key={nav.id}
+              className={`
+                ${active === nav.title ? "text-white" : "text-secondary"} 
+                hover:text-white 
+                text-[18px] font-medium cursor-pointer transition-colors duration-300
+              `}
+              onClick={() => handleNavigation(nav)}
+            >
+              {nav.title}
+            </li>
           ))}
         </ul>
 
@@ -114,29 +154,12 @@ const Navbar = () => {
                   className={`font-poppins font-medium cursor-pointer text-[16px] ${
                     active === nav.title ? "text-white" : "text-secondary"
                   } transition-colors duration-300`}
+                  onClick={() => {
+                    setToggle(!toggle);
+                    handleNavigation(nav);
+                  }}
                 >
-                  {nav.url ? (
-                    <Link
-                      to={nav.url}
-                      onClick={() => {
-                        setToggle(!toggle);
-                        setActive(nav.title);
-                        window.scrollTo(0, 0);
-                      }}
-                    >
-                      {nav.title}
-                    </Link>
-                  ) : (
-                    <a
-                      href={`#${nav.id}`}
-                      onClick={() => {
-                        setToggle(!toggle);
-                        setActive(nav.title);
-                      }}
-                    >
-                      {nav.title}
-                    </a>
-                  )}
+                  {nav.title}
                 </li>
               ))}
             </ul>
