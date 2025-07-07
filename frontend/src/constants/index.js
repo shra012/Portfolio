@@ -248,7 +248,8 @@ const projects = [
       }
     ],
     image: ClaimsGuard,
-    source_code_link: "https://github.com/shra012/Commure-Hackathon"
+    source_code_link: "https://github.com/shra012/Commure-Hackathon",
+    live_demo_link: "devpost.com/software/claimguardians",
   }
 ];
 
