@@ -109,7 +109,6 @@ const response = await fetch(FUNCTION_URL, {
 The function uses the following environment variables:
 - Email service configuration
 - SMTP credentials
-- API keys (if applicable)
 
 ## Files Structure
 
