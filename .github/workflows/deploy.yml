@@ -7,7 +7,6 @@ on:
   push:
     branches:
       - development
-      - main
 
 jobs:
   build-and-deploy-frontend:
@@ -32,6 +31,9 @@ jobs:
         run: npm ci
 
       - name: Build frontend
+        env:
+          VITE_DO_FUNCTION_URL: ${{ secrets.VITE_DO_FUNCTION_URL }}
+          VITE_DO_AUTH_TOKEN: ${{ secrets.VITE_DO_AUTH_TOKEN }}
         run: npm run build
 
       - name: Deploy to GitHub Pages

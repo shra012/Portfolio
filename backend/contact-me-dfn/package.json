@@ -1,0 +1,13 @@
+{
+  "name": "contact-me-dfn",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node index.js"    
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.0.1",
+    "nodemailer": "^7.0.5"
+  }
+}

@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
-import emailjs from "@emailjs/browser";
 import { Toaster, toast } from 'react-hot-toast';
 
 import { styles } from "../styles";
@@ -30,7 +29,7 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.message) {
       toast.error('Please fill in all fields.');
@@ -42,57 +41,37 @@ const Contact = () => {
     }
     setLoading(true);
 
-    // Send email to yourself
-    emailjs
-      .send(
-        'service_68dha8k', // Replace with your Service ID
-        'template_jpmpfba', // Replace with your Template ID for sending to yourself
-        {
-          from_name: form.name,
-          to_name: "Shravankumar",
-          from_email: form.email,
-          to_email: "shravan.fisher@live.com", // Your email address
+    try {
+      const response = await fetch(import.meta.env.VITE_DO_FUNCTION_URL, {
+        method: 'POST',
+        headers: {
+          'Authorization': `BASIC ${import.meta.env.VITE_DO_AUTH_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
           message: form.message,
-        },
-        'HFU-o5X_Yau3iXA6v' // Replace with your Public Key
-      )
-      .then(
-        () => {
-          // Send confirmation email to the user
-          emailjs.send(
-            'service_68dha8k', // Replace with your Service ID
-            'user_confirm', // NEW: Shorter Template ID for user confirmation
-            {
-              to_name: form.name,
-              from_name: "Shravankumar",
-              from_email: "shravan.fisher@live.com", // Your email address as sender
-              to_email: form.email,
-              message_content: form.message, // Pass message content for template
-            },
-            'HFU-o5X_Yau3iXA6v' // Replace with your Public Key
-          ).then(
-            () => {
-              setLoading(false);
-              toast.success("Thank you! Your message has been sent, and a confirmation email is on its way.");
-              setForm({
-                name: "",
-                email: "",
-                message: "",
-              });
-            },
-            (error) => {
-              setLoading(false);
-              console.error("Failed to send confirmation email:", error);
-              toast.error("Your message was sent, but we couldn't send a confirmation. Please try again or contact me directly.");
-            }
-          );
-        },
-        (error) => {
-          setLoading(false);
-          console.error(error);
-          toast.error("Ahh, something went wrong. Please try again.");
-        }
-      );
+        }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setLoading(false);
+        toast.success("Thank you! Your message has been sent successfully.");
+        setForm({
+          name: "",
+          email: "",
+          message: "",
+        });
+      } else {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error('Error sending message:', error);
+      toast.error("Ahh, something went wrong. Please try again.");
+    }
   };
 
   return (

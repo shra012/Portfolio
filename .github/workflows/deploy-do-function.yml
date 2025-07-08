@@ -1,0 +1,56 @@
+name: Deploy Digital Ocean Function
+
+on:
+  push:
+    branches:
+      - development
+    paths:
+      - 'backend/contact-me-dfn/**'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - 'backend/contact-me-dfn/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: 'backend/contact-me-dfn/package.json'
+
+    - name: Install dependencies
+      working-directory: backend/contact-me-dfn
+      run: npm ci
+
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+    - name: Authenticate with Digital Ocean Functions
+      run: doctl serverless connect
+
+    - name: Deploy function
+      working-directory: backend/contact-me-dfn
+      run: doctl serverless deploy . --verbose
+
+    - name: Get function URL
+      id: get-url
+      working-directory: backend/contact-me-dfn
+      run: |
+        URL=$(doctl serverless functions get contact-me/contact-me-dfn --url)
+        echo "function-url=$URL" >> $GITHUB_OUTPUT
+
+    - name: Notify deployment success
+      if: github.event_name == 'push'
+      run: |
+        echo "🚀 Digital Ocean Function deployed successfully!"
+        echo "Function URL: ${{ steps.get-url.outputs.function-url }}"

@@ -1,0 +1,12 @@
+packages:
+  - name: contact-me
+    environment:
+      EMAIL_USER: ${EMAIL_USER}
+      EMAIL_PASS: ${EMAIL_PASS}
+      FROM_ADDRESS: ${FROM_ADDRESS}
+    functions:
+      - name: contact-me-dfn
+        runtime: nodejs:18
+        web: true
+        limits:
+          timeout: 10000

@@ -4,7 +4,6 @@ import toast from 'react-hot-toast';
 import { SectionWrapper } from '../hoc';
 import { slideIn } from '../utils/motion';
 import { EarthCanvas } from './canvas';
-import config from '../config';
 
 const FeedbackForm = () => {
     const [form, setForm] = useState({
@@ -33,15 +32,21 @@ const FeedbackForm = () => {
         }
         setLoading(true);
         try {
-            const response = await fetch(`${config.apiUrl}/api/feedback`, {
+            const response = await fetch(import.meta.env.VITE_DO_FUNCTION_URL, {
                 method: 'POST',
                 headers: {
+                    'Authorization': `BASIC ${import.meta.env.VITE_DO_AUTH_TOKEN}`,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(form),
+                body: JSON.stringify({
+                    name: form.name,
+                    email: form.email,
+                    message: form.message,
+                }),
             });
 
             if (response.ok) {
+                const result = await response.json();
                 toast.success('Thank you for your feedback!\nI will get back to you soon.');
                 setForm({
                     name: '',
@@ -49,8 +54,7 @@ const FeedbackForm = () => {
                     message: '',
                 });
             } else {
-                const errorData = await response.json();
-                toast.error(errorData.message || 'Failed to send feedback.');
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
         } catch (error) {
             console.error('Error sending feedback:', error);
