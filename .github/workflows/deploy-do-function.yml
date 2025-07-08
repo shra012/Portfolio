@@ -34,7 +34,7 @@ jobs:
       with:
         node-version: '18'
         cache: 'npm'
-        cache-dependency-path: 'packages/contact-me/contact-me-dfn/package.json'
+        cache-dependency-path: 'backend/contact-me-dfn/packages/contact-me/contact-me-dfn/package.json'
 
     - name: Install dependencies
       run: npm ci

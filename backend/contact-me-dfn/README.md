@@ -1,6 +1,6 @@
 # Contact Me - Digital Ocean Function
 
-This is a serverless function deployed on Digital Ocean Functions that handles contact form submissions from the portfolio website.
+This is a serverless function deployed on Digital Ocean Functions that handles contact form submissions from the portfolio website
 
 ## Overview
 
