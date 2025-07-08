@@ -33,6 +33,9 @@ jobs:
       with:
         token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
+    - name: Install serverless support
+      run: doctl serverless install
+
     - name: Authenticate with Digital Ocean Functions
       run: doctl serverless connect
 
