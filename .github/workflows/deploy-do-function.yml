@@ -10,6 +10,10 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: github-pages
+    defaults:
+      run:
+        working-directory: backend/contact-me-dfn
     
     steps:
     - name: Checkout code
@@ -23,7 +27,6 @@ jobs:
         cache-dependency-path: 'backend/contact-me-dfn/package.json'
 
     - name: Install dependencies
-      working-directory: backend/contact-me-dfn
       run: npm ci
 
     - name: Install doctl
@@ -35,12 +38,10 @@ jobs:
       run: doctl serverless connect
 
     - name: Deploy function
-      working-directory: backend/contact-me-dfn
       run: doctl serverless deploy . --verbose
 
     - name: Get function URL
       id: get-url
-      working-directory: backend/contact-me-dfn
       run: |
         URL=$(doctl serverless functions get contact-me/contact-me-dfn --url)
         echo "function-url=$URL" >> $GITHUB_OUTPUT
