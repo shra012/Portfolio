@@ -41,6 +41,10 @@ jobs:
 
     - name: Deploy function
       run: doctl serverless deploy . --verbose
+      env:
+        EMAIL_USER: ${{ secrets.EMAIL_USER }}
+        EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+        FROM_ADDRESS: ${{ secrets.FROM_ADDRESS }}
 
     - name: Get function URL
       id: get-url
