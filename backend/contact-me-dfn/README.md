@@ -10,7 +10,6 @@ This function receives contact form data via HTTP POST requests and processes th
 
 - **Runtime**: Node.js
 - **Platform**: Digital Ocean Functions
-- **Endpoint**: `https://faas-blr1-8177d592.doserverless.co/api/v1/namespaces/fn-aef69d3b-2f68-4357-bc5e-2073e1bbb71c/actions/contact-me/contact-me-dfn`
 
 ## CI/CD Pipeline
 
