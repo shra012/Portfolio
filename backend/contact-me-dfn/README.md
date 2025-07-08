@@ -4,7 +4,7 @@ This is a serverless function deployed on Digital Ocean Functions that handles c
 
 ## Overview
 
-This function receives contact form data via HTTP POST requests and processes them securely. It's designed to handle contact form submissions from the frontend portfolio application.
+This function receives contact form data via HTTP POST requests and processes them securely. It's designed to handle contact form submissions from the frontend portfolio application
 
 ## Function Details
 
