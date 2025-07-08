@@ -18,15 +18,27 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Create directory structure and move files
+      run: |
+        mkdir -p backend/contact-me-dfn/packages/contact-me/contact-me-dfn
+        mv backend/contact-me-dfn/index.js backend/contact-me-dfn/packages/contact-me/contact-me-dfn/
+        mv backend/contact-me-dfn/package.json backend/contact-me-dfn/packages/contact-me/contact-me-dfn/
+        if [ -f backend/contact-me-dfn/package-lock.json ]; then
+          mv backend/contact-me-dfn/package-lock.json backend/contact-me-dfn/packages/contact-me/contact-me-dfn/
+        fi
+        echo "Files moved successfully"
+        ls -la backend/contact-me-dfn/packages/contact-me/contact-me-dfn/
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
         cache: 'npm'
-        cache-dependency-path: 'backend/contact-me-dfn/package.json'
+        cache-dependency-path: 'backend/contact-me-dfn/packages/contact-me/contact-me-dfn/package.json'
 
     - name: Install dependencies
       run: npm ci
+      working-directory: backend/contact-me-dfn/packages/contact-me/contact-me-dfn
 
     - name: Install doctl
       uses: digitalocean/action-doctl@v2
