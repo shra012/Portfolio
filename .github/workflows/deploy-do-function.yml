@@ -6,10 +6,6 @@ on:
       - development
     paths:
       - 'backend/contact-me-dfn/**'
-  pull_request:
-    branches: [ main, master ]
-    paths:
-      - 'backend/contact-me-dfn/**'
 
 jobs:
   deploy:
