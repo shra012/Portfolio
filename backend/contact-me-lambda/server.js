@@ -94,7 +94,7 @@ app.post('/contact', async (req, res) => {
                                     <strong style="color: #1f2937; font-size: 16px;">Shravankumar Nagarajan</strong>
                                 </p>
                                 <div style="margin-top: 20px;">
-                                    <a href="https://portfolio.shra012.com" style="display: inline-block; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-size: 14px; font-weight: 500; transition: all 0.3s ease;">
+                                    <a href="https://shra012.github.io/Portfolio" style="display: inline-block; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-size: 14px; font-weight: 500; transition: all 0.3s ease;">
                                         🌐 Visit My Portfolio
                                     </a>
                                 </div>
