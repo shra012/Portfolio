@@ -52,7 +52,7 @@ const Hero = () => {
             transition={{ duration: 0.5, delay: 0.6 }}
             className={`${styles.heroSubText} mt-2 text-white-100`}
           >
-            Fullstack engineer passionate about innovation, problem solving, ML/AI <br className='sm:block hidden' /> and creating impactful solutions.
+            Versatile Fullstack AI Engineer passionate about LLMs, ML/DL, problem solving, <br className='sm:block hidden' /> and creating impactful solutions.
           </motion.p>
         </div>
       </div>
