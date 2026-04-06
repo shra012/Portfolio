@@ -22,10 +22,12 @@ const ServiceCard = ({ index, title, icon, link }) => (
         className='bg-tertiary rounded-[20px] py-5 px-12 min-h-[280px] flex justify-evenly items-center flex-col'
         onClick={() => window.open(link, '_blank', 'noopener,noreferrer')}
         style={{ cursor: 'pointer' }}
+        role="button"
+        aria-label={`Learn more about ${title}`}
       >
         <img
           src={icon}
-          alt='web-development'
+          alt={`${title} icon`}
           className='w-16 h-16 object-contain'
         />
 
@@ -58,6 +60,7 @@ const About = () => {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         className="inline-flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full font-medium hover:bg-gray-200 transition-colors mt-6"
+        aria-label="Download Shravankumar's Resume"
       >
         <HiDownload className="w-5 h-5" />
         Download Resume

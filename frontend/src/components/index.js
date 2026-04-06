@@ -8,6 +8,7 @@ import Works from "./Works";
 import Contact from "./Contact";
 import CanvasLoader from "./Loader";
 import LoadingScreen from "./LoadingScreen";
+import ScrollToTop from "./ScrollToTop";
 
 export {
   Hero,
@@ -22,5 +23,6 @@ export {
   BallCanvas,
   ComputersCanvas,
   StarsCanvas,
-  LoadingScreen
+  LoadingScreen,
+  ScrollToTop
 };

@@ -13,7 +13,8 @@ import {
   Works,
   Contact,
   StarsCanvas,
-  LoadingScreen
+  LoadingScreen,
+  ScrollToTop
 } from './components';
 import Footer from "./components/Footer";
 import { AuthProvider } from './contexts/AuthContext';
@@ -82,6 +83,7 @@ const App = () => {
                     </>
                   } />
                 </Routes>
+                <ScrollToTop />
               </motion.div>
             )}
           </AnimatePresence>

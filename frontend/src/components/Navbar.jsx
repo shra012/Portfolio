@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { HiDownload } from "react-icons/hi";
 
 import { styles } from "../styles";
 import { navLinks as baseNavLinks } from "../constants";
@@ -117,7 +118,8 @@ const Navbar = () => {
           </p>
         </Link>
 
-        <ul className='list-none hidden sm:flex flex-row gap-10'>
+        {/* Desktop Navigation */}
+        <ul className='list-none hidden sm:flex flex-row gap-10 items-center'>
           {navLinks.map((nav) => (
             <li
               key={nav.id}
@@ -131,19 +133,39 @@ const Navbar = () => {
               {nav.title}
             </li>
           ))}
+          
+          <a
+            href={`${import.meta.env.BASE_URL}Shravankumar_Nagarajan_Resume.pdf`}
+            download
+            className="bg-white text-black px-4 py-2 rounded-full font-medium hover:bg-gray-200 transition-colors flex items-center gap-2 text-[16px] shadow-lg"
+          >
+            <HiDownload className="w-4 h-4" />
+            Resume
+          </a>
         </ul>
 
-        <div className='sm:hidden flex flex-1 justify-end items-center'>
+        {/* Mobile Navigation */}
+        <div className='sm:hidden flex flex-1 justify-end items-center gap-4'>
+          <a
+            href={`${import.meta.env.BASE_URL}Shravankumar_Nagarajan_Resume.pdf`}
+            download
+            className="bg-white text-black px-3 py-1.5 rounded-full font-medium text-[14px] flex items-center gap-1 shadow-md"
+            aria-label="Download Resume"
+          >
+            <HiDownload className="w-4 h-4" />
+            Resume
+          </a>
+
           <img
             src={toggle ? close : menu}
             alt='menu'
-            className='w-[28px] h-[28px] object-contain'
+            className='w-[28px] h-[28px] object-contain cursor-pointer'
             onClick={() => setToggle(!toggle)}
           />
 
           <div
             className={`${!toggle ? "hidden" : "flex"
-              } p-6 black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] z-10 rounded-xl`}
+              } p-6 black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] z-10 rounded-xl shadow-xl`}
           >
             <ul className='list-none flex justify-end items-start flex-1 flex-col gap-4'>
               {navLinks.map((nav) => (
