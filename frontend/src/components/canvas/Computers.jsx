@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 import CanvasLoader from '../Loader';
+import useMobile from '../../hooks/useMobile';
 
 const Computers = () => {
   const computer = useGLTF(`${import.meta.env.BASE_URL}desktop_pc/scene.gltf`);
@@ -29,13 +30,19 @@ const Computers = () => {
 };
 
 const ComputersCanvas = () => {
+  const isMobile = useMobile();
+
+  // Completely disable 3D model on mobile as per user request
+  if (isMobile) return null;
+
   return (
     <div className="absolute inset-0 z-0 w-full h-full cursor-pointer">
       <Canvas
         frameloop='demand'
         shadows
+        dpr={[1, 2]}
         camera={{ position: [20, 3, 5], fov: 25 }}
-        gl={{ preserveDrawingBuffer: true, failIfMajorPerformanceCaveat: true }}
+        gl={{ preserveDrawingBuffer: true }}
         className="w-full h-full cursor-pointer"
       >
         <Suspense fallback={<CanvasLoader />}>

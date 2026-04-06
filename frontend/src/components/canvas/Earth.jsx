@@ -3,6 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
 
 import CanvasLoader from "../Loader";
+import useMobile from "../../hooks/useMobile";
 
 const Earth = () => {
   const earth = useGLTF(`${import.meta.env.BASE_URL}planet/scene.gltf`);
@@ -27,6 +28,11 @@ const Earth = () => {
 };
 
 const EarthCanvas = () => {
+  const isMobile = useMobile();
+
+  // Completely disable 3D model on mobile as per user request
+  if (isMobile) return null;
+
   return (
     <div className="w-full h-full cursor-pointer">
       <Canvas

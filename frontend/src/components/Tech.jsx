@@ -7,8 +7,10 @@ import { technologies } from "../constants";
 import { styles } from "../styles";
 import { motion } from "framer-motion";
 import { textVariant } from "../utils/motion";
+import useMobile from "../hooks/useMobile";
 
 const Tech = () => {
+  const isMobile = useMobile();
   const [webglSupported, setWebglSupported] = useState(true);
   const [failedCanvases, setFailedCanvases] = useState(new Set());
   const [isChrome, setIsChrome] = useState(false);
@@ -75,7 +77,8 @@ const Tech = () => {
   const TechIcon = ({ technology, index }) => {
     const shouldUseWebGL = webglSupported && 
                           !failedCanvases.has(technology.name) && 
-                          index < maxWebGLComponents;
+                          index < maxWebGLComponents &&
+                          !isMobile; // Disable WebGL on mobile
 
     if (shouldUseWebGL) {
       return (
@@ -126,10 +129,10 @@ const Tech = () => {
       
       <div className='flex flex-row flex-wrap justify-center gap-10 mt-10'>
         {/* Show performance info for debugging */}
-        {isChrome && (
+        {(isChrome || isMobile) && (
           <div className="w-full text-center mb-4">
             <p className="text-xs text-gray-400">
-              {!webglSupported && " (WebGL not supported)"}
+              {isMobile ? "(3D icons disabled on mobile for performance)" : !webglSupported && " (WebGL not supported)"}
             </p>
           </div>
         )}
