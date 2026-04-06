@@ -14,7 +14,9 @@ import {
   Contact,
   StarsCanvas,
   LoadingScreen,
-  ScrollToTop
+  ScrollToTop,
+  Blog,
+  BlogPost
 } from './components';
 import Footer from "./components/Footer";
 import { AuthProvider } from './contexts/AuthContext';
@@ -73,6 +75,18 @@ const App = () => {
                         <Contact />
                         <StarsCanvas />
                       </div>
+                    </>
+                  } />
+                  <Route path="/blog" element={
+                    <>
+                      <Navbar />
+                      <Blog />
+                    </>
+                  } />
+                  <Route path="/blog/:id" element={
+                    <>
+                      <Navbar />
+                      <BlogPost />
                     </>
                   } />
                   <Route path="/feedback" element={

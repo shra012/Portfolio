@@ -9,6 +9,8 @@ import Contact from "./Contact";
 import CanvasLoader from "./Loader";
 import LoadingScreen from "./LoadingScreen";
 import ScrollToTop from "./ScrollToTop";
+import Blog from "./Blog";
+import BlogPost from "./BlogPost";
 
 export {
   Hero,
@@ -24,5 +26,7 @@ export {
   ComputersCanvas,
   StarsCanvas,
   LoadingScreen,
-  ScrollToTop
+  ScrollToTop,
+  Blog,
+  BlogPost
 };

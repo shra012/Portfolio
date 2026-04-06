@@ -59,6 +59,11 @@ export const navLinks = [
     title: "Work",
   },
   {
+    id: "blog",
+    title: "Blog",
+    url: "/blog"
+  },
+  {
     id: "contact",
     title: "Contact",
   },
@@ -73,7 +78,7 @@ const services = [
   {
     title: "Data Structures & Algorithms",
     icon: mobile,
-    link: "https://takeuforward.org/plus/profile/shra012",
+    link: "https://takeuforward.org/profile/shra012",
   },
   {
     title: "Backend Developer",
@@ -134,7 +139,7 @@ export const technologies = [
 
 const experiences = [
   {
-    title: "Master’s Student, Applied Data Intelligence",
+    title: "Master's Student, Applied Data Intelligence",
     company_name: "San Jose State University",
     icon: spartan,
     iconBg: "#1A237E",

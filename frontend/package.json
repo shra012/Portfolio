@@ -26,6 +26,7 @@
     "caniuse-lite": "^1.0.30001722",
     "date-fns": "^4.1.0",
     "framer-motion": "^9.0.7",
+    "highlight.js": "^11.11.1",
     "lucide-react": "^0.514.0",
     "maath": "^0.5.2",
     "node-cron": "^4.1.0",
