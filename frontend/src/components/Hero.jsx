@@ -18,13 +18,13 @@ const Hero = () => {
   return (
     <section className={`relative w-full ${isMobile ? 'h-auto min-h-[60vh] py-20' : 'h-screen'} mx-auto flex flex-col justify-center`}>
       <div
-        className={`${isMobile ? 'relative top-0' : 'absolute inset-0 top-[120px]'} max-w-7xl mx-auto ${styles.paddingX} flex flex-row items-start gap-5`}
+        className={`${isMobile ? 'relative top-0' : 'absolute inset-0 top-[120px]'} max-w-7xl mx-auto ${styles.paddingX} flex flex-col sm:flex-row items-start gap-3 sm:gap-5`}
       >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className='flex flex-col justify-center items-center mt-5'
+          className='flex flex-col justify-center items-center mt-2 sm:mt-5'
         >
           <motion.div
             initial={{ scale: 0 }}
@@ -36,7 +36,7 @@ const Hero = () => {
             initial={{ height: 0 }}
             animate={{ height: "100%" }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className={`w-1 ${isMobile ? 'h-40' : 'sm:h-80 h-40'} violet-gradient`}
+            className={`w-1 ${isMobile ? 'h-24' : 'sm:h-80 h-40'} violet-gradient`}
           />
         </motion.div>
 
@@ -60,7 +60,7 @@ const Hero = () => {
         </div>
       </div>
 
-      {!isMobile && <ComputersCanvas />}
+      <ComputersCanvas />
 
       {!isMobile && (
         <div className='absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center z-50 pointer-events-auto'>

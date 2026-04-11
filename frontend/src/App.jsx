@@ -47,7 +47,7 @@ const App = () => {
   return (
     <AuthProvider>
       <Router>
-        <div className='relative z-0 bg-primary min-h-screen flex flex-col'>
+        <div className='relative z-0 bg-primary min-h-screen flex flex-col overflow-x-hidden'>
           <AnimatePresence mode="wait">
             {isLoading ? (
               <LoadingScreen key="loading" />

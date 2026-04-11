@@ -19,7 +19,7 @@ const ServiceCard = ({ index, title, icon, link }) => (
       className='w-full green-pink-gradient p-[1px] rounded-[20px] shadow-card cursor-pointer'
     >
       <div
-        className='bg-tertiary rounded-[20px] py-5 px-12 min-h-[280px] flex justify-evenly items-center flex-col'
+        className='bg-tertiary rounded-[20px] py-5 px-6 sm:px-12 min-h-[240px] flex justify-evenly items-center flex-col'
         onClick={() => window.open(link, '_blank', 'noopener,noreferrer')}
         style={{ cursor: 'pointer' }}
         role="button"
@@ -66,7 +66,7 @@ const About = () => {
         Download Resume
       </motion.a>
 
-      <div className="mt-20 flex flex-wrap gap-10">
+      <div className="mt-20 flex flex-wrap gap-6 sm:gap-10 justify-center">
         {services.map((service, index) => (
           <ServiceCard key={service.title} index={index} {...service} />
         ))}

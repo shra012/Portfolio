@@ -30,22 +30,24 @@ const Earth = () => {
 const EarthCanvas = () => {
   const isMobile = useMobile();
 
-  // Completely disable 3D model on mobile as per user request
-  if (isMobile) return null;
+  const wrapperClassName = isMobile
+    ? 'w-full h-[280px] cursor-pointer'
+    : 'w-full h-full cursor-pointer';
+
+  const camera = isMobile
+    ? { fov: 42, near: 0.1, far: 200, position: [-3.5, 2.4, 7] }
+    : { fov: 45, near: 0.1, far: 200, position: [-4, 3, 6] };
+
+  const dpr = isMobile ? [1, 1.5] : [1, 2];
 
   return (
-    <div className="w-full h-full cursor-pointer">
+    <div className={wrapperClassName}>
       <Canvas
         shadows
         frameloop='demand'
-        dpr={[1, 2]}
+        dpr={dpr}
         gl={{ preserveDrawingBuffer: true }}
-        camera={{
-          fov: 45,
-          near: 0.1,
-          far: 200,
-          position: [-4, 3, 6],
-        }}
+        camera={camera}
         className="w-full h-full cursor-pointer"
       >
         <Suspense fallback={<CanvasLoader />}>

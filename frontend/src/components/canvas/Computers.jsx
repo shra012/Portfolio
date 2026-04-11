@@ -32,16 +32,23 @@ const Computers = () => {
 const ComputersCanvas = () => {
   const isMobile = useMobile();
 
-  // Completely disable 3D model on mobile as per user request
-  if (isMobile) return null;
+  const wrapperClassName = isMobile
+    ? 'relative w-full h-[280px] cursor-pointer'
+    : 'absolute inset-0 z-0 w-full h-full cursor-pointer';
+
+  const camera = isMobile
+    ? { position: [16, 3, 7], fov: 30 }
+    : { position: [20, 3, 5], fov: 25 };
+
+  const dpr = isMobile ? [1, 1.5] : [1, 2];
 
   return (
-    <div className="absolute inset-0 z-0 w-full h-full cursor-pointer">
+    <div className={wrapperClassName}>
       <Canvas
         frameloop='demand'
         shadows
-        dpr={[1, 2]}
-        camera={{ position: [20, 3, 5], fov: 25 }}
+        dpr={dpr}
+        camera={camera}
         gl={{ preserveDrawingBuffer: true }}
         className="w-full h-full cursor-pointer"
       >

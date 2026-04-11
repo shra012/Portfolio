@@ -82,7 +82,7 @@ const Tech = () => {
 
     if (shouldUseWebGL) {
       return (
-        <div className='w-28 h-28' key={technology.name}>
+        <div className='w-20 h-20 sm:w-28 sm:h-28' key={technology.name}>
           <BallCanvas 
             icon={technology.icon} 
             onError={() => handleCanvasError(technology.name)}
@@ -94,14 +94,14 @@ const Tech = () => {
     // Fallback 2D component
     return (
       <div 
-        className='w-28 h-28 flex items-center justify-center bg-gray-300 rounded-full hover:bg-[#915EFF] transition-colors duration-300 group'
+        className='w-20 h-20 sm:w-28 sm:h-28 flex items-center justify-center bg-gray-300 rounded-full hover:bg-[#915EFF] transition-colors duration-300 group'
         key={technology.name}
         title={technology.name}
       >
         <img 
           src={technology.icon} 
           alt={technology.name}
-          className='w-16 h-16 object-contain group-hover:scale-110 transition-transform duration-300'
+          className='w-12 h-12 sm:w-16 sm:h-16 object-contain group-hover:scale-110 transition-transform duration-300'
           onError={(e) => {
             // Fallback for broken images
             e.target.style.display = 'none';
@@ -127,7 +127,7 @@ const Tech = () => {
         </h2>
       </motion.div>
       
-      <div className='flex flex-row flex-wrap justify-center gap-10 mt-10'>
+      <div className='grid grid-cols-2 justify-items-center sm:flex sm:flex-row flex-wrap justify-center gap-6 sm:gap-10 mt-10'>
         {/* Show performance info for debugging */}
         {(isChrome || isMobile) && (
           <div className="w-full text-center mb-4">

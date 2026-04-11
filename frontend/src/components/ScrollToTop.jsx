@@ -28,7 +28,7 @@ const ScrollToTop = () => {
   }, []);
 
   return (
-    <div className="fixed bottom-10 right-10 z-[100]">
+    <div className="fixed bottom-6 right-4 sm:bottom-10 sm:right-10 z-[100]">
       <AnimatePresence>
         {isVisible && (
           <motion.button
@@ -38,9 +38,9 @@ const ScrollToTop = () => {
             transition={{ duration: 0.3 }}
             onClick={scrollToTop}
             aria-label="Scroll to top"
-            className="w-12 h-12 bg-[#915EFF] text-white rounded-full flex items-center justify-center shadow-lg hover:bg-[#804dee] transition-colors focus:outline-none focus:ring-2 focus:ring-[#915EFF] focus:ring-offset-2 focus:ring-offset-primary"
+            className="w-11 h-11 sm:w-12 sm:h-12 bg-[#915EFF] text-white rounded-full flex items-center justify-center shadow-lg hover:bg-[#804dee] transition-colors focus:outline-none focus:ring-2 focus:ring-[#915EFF] focus:ring-offset-2 focus:ring-offset-primary"
           >
-            <HiArrowUp className="w-6 h-6" />
+            <HiArrowUp className="w-5 h-5 sm:w-6 sm:h-6" />
           </motion.button>
         )}
       </AnimatePresence>
