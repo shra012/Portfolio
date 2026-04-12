@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { styles } from "../styles";
 import { SectionWrapper } from "../hoc";
 import { fadeIn, textVariant } from "../utils/motion";
-import blogData from "../constants/blog.json";
+import blogData from "../constants/blogData";
 
 const BlogCard = ({ index, id, title, date, aiSummary, image, tags }) => (
   <motion.div

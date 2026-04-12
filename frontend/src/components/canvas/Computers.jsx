@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 import CanvasLoader from '../Loader';
 import useMobile from '../../hooks/useMobile';
+import useWebglSupport from '../../hooks/useWebglSupport';
 
 const Computers = () => {
   const computer = useGLTF(`${import.meta.env.BASE_URL}desktop_pc/scene.gltf`);
@@ -31,6 +32,11 @@ const Computers = () => {
 
 const ComputersCanvas = () => {
   const isMobile = useMobile();
+  const isWebglSupported = useWebglSupport();
+
+  if (!isWebglSupported) {
+    return null;
+  }
 
   const wrapperClassName = isMobile
     ? 'relative w-full h-[280px] cursor-pointer'

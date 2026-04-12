@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Toaster, toast } from 'react-hot-toast';
@@ -44,63 +44,72 @@ const App = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  const AppContent = () => {
+    const location = useLocation();
+    const showLoading = isLoading && location.pathname === '/';
+
+    return (
+      <AnimatePresence mode="wait">
+        {showLoading ? (
+          <LoadingScreen key="loading" />
+        ) : (
+          <motion.div
+            key="content"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="w-full flex-grow"
+          >
+            <Routes>
+              <Route path="/" element={
+                <>
+                  <div className='bg-hero-pattern bg-cover bg-no-repeat bg-center'>
+                    <Navbar />
+                    <Hero />
+                  </div>
+                  <About />
+                  <Experience />
+                  <Tech />
+                  <Works />
+                  <div className='relative z-0'>
+                    <Contact />
+                    <StarsCanvas />
+                  </div>
+                </>
+              } />
+              <Route path="/blog" element={
+                <>
+                  <Navbar />
+                  <Blog />
+                </>
+              } />
+              <Route path="/blog/:id" element={
+                <>
+                  <Navbar />
+                  <BlogPost />
+                </>
+              } />
+              <Route path="/feedback" element={
+                <>
+                  <Navbar />
+                  <StarsCanvas />
+                  <FeedbackForm />
+                </>
+              } />
+            </Routes>
+            <ScrollToTop />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    );
+  };
+
   return (
     <AuthProvider>
       <Router>
         <div className='relative z-0 bg-primary min-h-screen flex flex-col overflow-x-hidden'>
-          <AnimatePresence mode="wait">
-            {isLoading ? (
-              <LoadingScreen key="loading" />
-            ) : (
-              <motion.div
-                key="content"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                className="w-full flex-grow"
-              >
-                <Routes>
-                  <Route path="/" element={
-                    <>
-                      <div className='bg-hero-pattern bg-cover bg-no-repeat bg-center'>
-                        <Navbar />
-                        <Hero />
-                      </div>
-                      <About />
-                      <Experience />
-                      <Tech />
-                      <Works />
-                      <div className='relative z-0'>
-                        <Contact />
-                        <StarsCanvas />
-                      </div>
-                    </>
-                  } />
-                  <Route path="/blog" element={
-                    <>
-                      <Navbar />
-                      <Blog />
-                    </>
-                  } />
-                  <Route path="/blog/:id" element={
-                    <>
-                      <Navbar />
-                      <BlogPost />
-                    </>
-                  } />
-                  <Route path="/feedback" element={
-                    <>
-                      <Navbar />
-                      <StarsCanvas />
-                      <FeedbackForm />
-                    </>
-                  } />
-                </Routes>
-                <ScrollToTop />
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <AppContent />
           <Footer />
         </div>
         <Toaster />

@@ -4,6 +4,7 @@ import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
 
 import CanvasLoader from "../Loader";
 import useMobile from "../../hooks/useMobile";
+import useWebglSupport from "../../hooks/useWebglSupport";
 
 const Earth = () => {
   const earth = useGLTF(`${import.meta.env.BASE_URL}planet/scene.gltf`);
@@ -29,6 +30,17 @@ const Earth = () => {
 
 const EarthCanvas = () => {
   const isMobile = useMobile();
+  const isWebglSupported = useWebglSupport();
+
+  if (!isWebglSupported) {
+    return (
+      <div className="w-full h-full rounded-3xl border border-white/10 bg-gradient-to-br from-[#151030] to-[#0b0f1a] flex items-center justify-center text-center px-6">
+        <p className="text-secondary text-sm leading-6">
+          3D globe unavailable in this browser.
+        </p>
+      </div>
+    );
+  }
 
   const wrapperClassName = isMobile
     ? 'w-full h-[280px] cursor-pointer'

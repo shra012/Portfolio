@@ -4,6 +4,7 @@ import { Points, PointMaterial, Preload } from "@react-three/drei";
 import * as random from "maath/random/dist/maath-random.esm";
 import CanvasLoader from '../Loader';
 import useMobile from "../../hooks/useMobile";
+import useWebglSupport from "../../hooks/useWebglSupport";
 
 const Stars = (props) => {
   const ref = useRef();
@@ -33,9 +34,10 @@ const Stars = (props) => {
 
 const StarsCanvas = () => {
   const isMobile = useMobile();
+  const isWebglSupported = useWebglSupport();
 
   // Disable 3D stars on mobile to save performance as per user request
-  if (isMobile) return null;
+  if (isMobile || !isWebglSupported) return null;
 
   return (
     <div className='w-full h-auto absolute inset-0 z-[-1]'>

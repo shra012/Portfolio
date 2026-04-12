@@ -319,6 +319,68 @@ pre:hover .copy-button {
   color: white;
 }
 
+/* Blog article typography and list readability */
+.blog-article h3 {
+  font-size: clamp(1.35rem, 1rem + 1vw, 1.95rem);
+  line-height: 1.35;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 0.9rem;
+  letter-spacing: 0.01em;
+}
+
+.blog-article p {
+  margin: 0.95rem 0;
+}
+
+.blog-article ul,
+.blog-article ol {
+  margin: 1rem 0 1.3rem;
+  padding-left: 0;
+}
+
+.blog-article ul {
+  list-style: none;
+}
+
+.blog-article ul li {
+  position: relative;
+  padding-left: 1.4rem;
+}
+
+.blog-article ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 9999px;
+  background: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+}
+
+.blog-article li {
+  margin: 0.5rem 0;
+  line-height: 1.75;
+}
+
+.blog-article ol li {
+  margin-left: 1.2rem;
+}
+
+.blog-article strong {
+  font-weight: 700;
+}
+
+.blog-article.prose-invert strong {
+  color: #f8fafc;
+}
+
+.blog-article.prose-slate strong {
+  color: #111827;
+}
+
 .copy-button.copied {
   background: #22c55e;
   border-color: #22c55e;

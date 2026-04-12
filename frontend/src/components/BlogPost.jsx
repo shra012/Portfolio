@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { styles } from "../styles";
-import { SectionWrapper } from "../hoc";
-import { fadeIn, textVariant } from "../utils/motion";
-import blogData from "../constants/blog.json";
+import { staggerContainer } from "../utils/motion";
+import blogData from "../constants/blogData";
 import { StarsCanvas } from "./canvas";
 import hljs from 'highlight.js';
 import 'highlight.js/styles/atom-one-dark.css';
@@ -12,10 +11,12 @@ import 'highlight.js/styles/atom-one-dark.css';
 const BlogPost = () => {
   const { id } = useParams();
   const post = blogData.find((p) => p.id === id);
+  const [isReaderMode, setIsReaderMode] = useState(false);
+  const [isDarkReader, setIsDarkReader] = useState(true);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [id]);
+  }, [id, isReaderMode]);
 
   useEffect(() => {
     // Add copy button to pre tags
@@ -57,7 +58,7 @@ const BlogPost = () => {
 
       pre.appendChild(button);
     });
-  }, [post]);
+  }, [post, isReaderMode, isDarkReader]);
 
   if (!post) {
     return (
@@ -71,72 +72,121 @@ const BlogPost = () => {
   }
 
   return (
-    <div className='relative z-0 bg-primary pt-20 min-h-screen'>
-      <div className={`${styles.paddingX} max-w-5xl mx-auto flex flex-col gap-10`}>
-        {/* Back Button */}
-        <Link to='/blog' className='flex items-center gap-2 text-secondary hover:text-white transition-colors'>
-          <span>←</span> Back to all posts
-        </Link>
+    <motion.div 
+      variants={staggerContainer()}
+      initial='hidden'
+      whileInView='show'
+      viewport={{ once: true, amount: 0.25 }}
+      className={`relative z-0 min-h-screen transition-colors duration-500 ${isReaderMode ? (isDarkReader ? 'fixed inset-0 z-[100] bg-[#111111] overflow-y-auto text-gray-300 pt-10 pb-20 font-serif w-full' : 'fixed inset-0 z-[100] bg-[#FFFBF0] overflow-y-auto text-gray-900 pt-10 pb-20 font-serif w-full') : 'bg-primary pt-20'}`}>
+      <div className={`mx-auto flex flex-col gap-10 ${isReaderMode ? 'max-w-3xl px-6 sm:px-12 gap-8' : `${styles.paddingX} max-w-5xl`}`}>
+        
+        {/* Top Controls */}
+        <div className="flex justify-between items-center z-10 relative">
+          {isReaderMode ? (
+            <button 
+              onClick={() => setIsReaderMode(false)}
+              className={`flex items-center gap-2 transition-colors font-sans font-semibold ${isDarkReader ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-black'}`}
+            >
+              <span>←</span> Exit Reader Mode
+            </button>
+          ) : (
+            <Link to='/blog' className='flex items-center gap-2 transition-colors font-sans text-secondary hover:text-white'>
+              <span>←</span> Back to all posts
+            </Link>
+          )}
+          
+          <div className="flex items-center gap-3">
+            {isReaderMode && (
+              <button 
+                onClick={() => setIsDarkReader(!isDarkReader)}
+                className={`p-2.5 rounded-full transition-all flex items-center justify-center font-sans shadow-md ${isDarkReader ? 'bg-gray-800 text-yellow-400 border border-gray-700 hover:bg-gray-700' : 'bg-[#Ece6d4] text-gray-800 border border-[#D5cea3] hover:bg-[#Dbd5aa]'}`}
+                title={isDarkReader ? "Switch to Light Mode" : "Switch to Dark Mode"}
+              >
+                {isDarkReader ? (
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                ) : (
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                )}
+              </button>
+            )}
+
+            {!isReaderMode && (
+              <button 
+                onClick={() => setIsReaderMode(true)}
+                className='px-5 py-2.5 rounded-full text-sm font-bold transition-all flex items-center gap-2 font-sans shadow-lg bg-tertiary text-white border border-white/10 hover:border-white/30'
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                Reader Mode
+              </button>
+            )}
+          </div>
+        </div>
 
         {/* Hero Image */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className='w-full h-[400px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/10'
-        >
-          <img src={post.image} alt={post.title} className='w-full h-full object-cover' />
-        </motion.div>
+        {!isReaderMode && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className='w-full h-[400px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/10'
+          >
+            <img src={post.image} alt={post.title} className='w-full h-full object-cover' />
+          </motion.div>
+        )}
 
         {/* Header Section */}
-        <motion.div variants={textVariant()}>
-          <div className='flex items-center gap-3 mb-4'>
-            <span className='w-8 h-[2px] bg-[#915eff]' />
-            <p className='text-[#915eff] font-bold text-[14px] uppercase tracking-[4px]'>
-              {post.type || "Article"}
-            </p>
-          </div>
+        <div>
+          {!isReaderMode && (
+            <div className='flex items-center gap-3 mb-4'>
+              <span className='w-8 h-[2px] bg-[#915eff]' />
+              <p className='text-[#915eff] font-bold text-[14px] uppercase tracking-[4px]'>
+                {post.type || "Article"}
+              </p>
+            </div>
+          )}
 
-          <p className='text-secondary font-medium text-[16px] mb-2'>{post.date}</p>
-          <h1 className='text-white font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px] leading-tight'>
+          <p className={`font-medium text-[16px] mb-2 font-sans ${isReaderMode ? (isDarkReader ? 'text-gray-400 mt-8' : 'text-gray-500 mt-8') : 'text-secondary'}`}>{post.date}</p>
+          <h1 className={`font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px] leading-tight ${isReaderMode ? (isDarkReader ? 'text-[#EAEAEA] font-serif' : 'text-[#2a2a2a] font-serif') : 'text-white'}`}>
             {post.title}
           </h1>
-          <div className='mt-4 flex flex-wrap gap-2'>
-            {post.tags.map((tag) => (
-              <span key={tag} className='px-3 py-1 bg-tertiary rounded-full text-[14px] text-secondary border border-white/5'>
-                #{tag}
-              </span>
-            ))}
-          </div>
-        </motion.div>
+          
+          {!isReaderMode && (
+            <div className='mt-4 flex flex-wrap gap-2'>
+              {post.tags.map((tag) => (
+                <span key={tag} className='px-3 py-1 bg-tertiary rounded-full text-[14px] text-secondary border border-white/5'>
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* AI Summary Highlight */}
-        <motion.div
-          variants={fadeIn("up", "tween", 0.1, 1)}
-          className='bg-white/[0.03] backdrop-blur-sm p-8 rounded-3xl border border-white/10 shadow-2xl overflow-hidden relative'
-        >
-          {/* Subtle accent glow */}
-          <div className='absolute top-0 left-0 w-1 h-full bg-[#915eff]/50' />
-
-          <p className='text-[#915eff] text-[14px] uppercase font-bold mb-2 tracking-widest opacity-80'>AI Generated Summary</p>
-          <p className='text-white/90 italic text-[18px] leading-[32px]'>
-            "{post.aiSummary}"
-          </p>
-        </motion.div>
+        {!isReaderMode && (
+          <div className='bg-white/[0.03] backdrop-blur-sm p-8 rounded-3xl border border-white/10 shadow-2xl overflow-hidden relative'>
+            <div className='absolute top-0 left-0 w-1 h-full bg-[#915eff]/50' />
+            <p className='text-[#915eff] text-[14px] uppercase font-bold mb-2 tracking-widest opacity-80'>AI Generated Summary</p>
+            <p className='text-white/90 italic text-[18px] leading-[32px]'>
+              "{post.aiSummary}"
+            </p>
+          </div>
+        )}
 
         {/* Main Content */}
-        <motion.div
-          variants={fadeIn("up", "tween", 0.2, 1)}
-          className='prose prose-invert prose-lg max-w-none text-secondary text-[18px] leading-[32px] mt-4 mb-20'
+        <div
+          className={`prose prose-lg blog-article max-w-none mb-20 transition-all duration-500 ${isReaderMode ? (isDarkReader ? 'prose-invert text-[#D1D5DB]' : 'prose-slate text-[#333333]') : 'prose-invert text-secondary text-[18px] leading-[32px] mt-4'}`}
+          style={isReaderMode ? { fontSize: '21px', lineHeight: '1.85' } : {}}
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
       </div>
 
-      <div className='fixed inset-0 z-[-1]'>
-        <StarsCanvas />
-      </div>
-    </div>
+      {!isReaderMode && (
+        <div className='fixed inset-0 z-[-1]'>
+          <StarsCanvas />
+        </div>
+      )}
+    </motion.div>
   );
 };
 
-export default SectionWrapper(BlogPost, "blog-post");
+export default BlogPost;
