@@ -152,7 +152,7 @@ const experiences = [
     ],
   },
   {
-    title: "Data Engineering Intern",
+    title: "Data Engineering Intern (Master's Internship)",
     company_name: "Snowflake",
     icon: snowflake,
     iconBg: "#FFFFFF",
@@ -194,9 +194,7 @@ const experiences = [
     iconBg: "#FFFFFF",
     date: "August 2019 - July 2020",
     points: [
-      "Produced 15+ microservices and 5+ micro-frontends for network monitoring using Scala, Shell Scripts, React, and Kafka, with end-to-end CI/CD via Concourse.",
-      "Built graph-based services on DataStax Enterprise Graph and Cassandra to process millions of events per day, integrating Prometheus, Grafana, and Alerta for real-time telemetry.",
-      "Delivered resilient observability and automation workflows that improved availability and reduced MTTR."
+      "Shipped 15+ microservices and 5+ micro-frontends for network monitoring in Scala, React, and Kafka, backed by DataStax Enterprise Graph and Cassandra processing millions of events per day, with Concourse CI/CD and Prometheus, Grafana, and Alerta telemetry that cut MTTR."
     ],
   },
   {
@@ -206,9 +204,7 @@ const experiences = [
     iconBg: "#383E56",
     date: "March 2018 - August 2019",
     points: [
-      "Delivered an insurance suite with Guidewire InsuranceNow and built UI modules with jQuery and Angular for policy lifecycle workflows.",
-      "Led migration from Maven to Gradle and created a metrics framework to guide feature investments and surface enhancement opportunities.",
-      "Supported backend and interface work across transactional insurance flows and internal delivery tooling."
+      "Delivered policy lifecycle workflows across a Guidewire InsuranceNow suite with jQuery and Angular UI modules, led the Maven to Gradle migration, and built a metrics framework that steered feature investment."
     ],
   },
   {
@@ -218,9 +214,7 @@ const experiences = [
     iconBg: "#FFFFFF",
     date: "May 2015 - March 2018",
     points: [
-      "Migrated a large retail platform from SOAP to REST APIs, cutting 99th-percentile latency to under 200 ms and doubling throughput through optimized Oracle PL/SQL queries and distributed caching.",
-      "Improved batch and event processing speed by adding multithreading and distributed microservices with Spring Batch Integration, reducing job completion times.",
-      "Worked across legacy modernization and enterprise integration layers with a focus on reliability and throughput."
+      "Migrated a large retail platform from SOAP to REST, cutting p99 latency below 200 ms and doubling throughput via optimized Oracle PL/SQL and distributed caching, then parallelized batch processing with multithreaded Spring Batch Integration microservices."
     ],
   }
   ,
