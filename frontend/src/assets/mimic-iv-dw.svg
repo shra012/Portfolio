@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 654" width="1024" height="654">
+  <rect width="1024" height="654" fill="#ffffff"/>
+  <g stroke="#4a9fe0" stroke-width="9" stroke-linecap="round">
+    <line x1="512" y1="300" x2="255" y2="140"/>
+    <line x1="512" y1="300" x2="769" y2="140"/>
+    <line x1="512" y1="300" x2="255" y2="460"/>
+    <line x1="512" y1="300" x2="769" y2="460"/>
+  </g>
+  <g fill="#ffffff" stroke="#1f2937" stroke-width="12" stroke-linejoin="round">
+    <rect x="140" y="76" width="230" height="128" rx="16"/>
+    <rect x="654" y="76" width="230" height="128" rx="16"/>
+    <rect x="140" y="396" width="230" height="128" rx="16"/>
+    <rect x="654" y="396" width="230" height="128" rx="16"/>
+  </g>
+  <g font-family="Helvetica,Arial,sans-serif" font-size="34" font-weight="600" fill="#1f2937" text-anchor="middle">
+    <text x="255" y="128">patient</text>
+    <text x="769" y="128">admission</text>
+    <text x="255" y="448">icu unit</text>
+    <text x="769" y="448">date</text>
+  </g>
+  <g stroke="#9ca3af" stroke-width="9" stroke-linecap="round">
+    <line x1="196" y1="166" x2="314" y2="166"/>
+    <line x1="710" y1="166" x2="828" y2="166"/>
+    <line x1="196" y1="486" x2="314" y2="486"/>
+    <line x1="710" y1="486" x2="828" y2="486"/>
+  </g>
+  <rect x="378" y="230" width="268" height="140" rx="18" fill="#4a9fe0" stroke="#1f2937" stroke-width="14" stroke-linejoin="round"/>
+  <text x="512" y="288" font-family="Helvetica,Arial,sans-serif" font-size="42" font-weight="700" fill="#ffffff" text-anchor="middle">FACT</text>
+  <text x="512" y="338" font-family="Helvetica,Arial,sans-serif" font-size="36" font-weight="500" fill="#eaf4fc" text-anchor="middle">icustay</text>
+  <text x="512" y="612" font-family="Helvetica,Arial,sans-serif" font-size="58" font-weight="700" fill="#1f2937" text-anchor="middle">MIMIC-IV Warehouse</text>
+</svg>

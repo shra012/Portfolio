@@ -53,6 +53,7 @@ import cts from "./company/cts.png";
 import accenture from "./company/accenture.png";
 
 import ClaimsGuard from "./claims-guard.png";
+import MimicWarehouse from "./mimic-iv-dw.svg";
 
 export {
   logo,
@@ -106,5 +107,6 @@ export {
   cts,
   tcs,
   accenture,
-  ClaimsGuard
+  ClaimsGuard,
+  MimicWarehouse
 };

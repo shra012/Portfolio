@@ -48,6 +48,7 @@ import {
   cts,
   accenture,
   ClaimsGuard,
+  MimicWarehouse,
 } from "../assets";
 
 export const navLinks = [
@@ -261,6 +262,35 @@ const projects = [
     image: ClaimsGuard,
     source_code_link: "https://github.com/shra012/Commure-Hackathon",
     live_demo_link: "https://devpost.com/software/claimguardians",
+  },
+  {
+    name: "MIMIC-IV Data Warehouse",
+    description:
+      "A dimensional data warehouse that turns the MIMIC-IV critical care database into a cost analysis platform. PySpark jobs on AWS Glue extract raw clinical records from S3, convert them to Parquet, and load a star schema of ICU stay facts and patient, admission, ICU unit, and date dimensions into Redshift, with notebooks layered on top for lab, drug, and nurse staffing cost analytics.",
+    tags: [
+      {
+        name: "pyspark",
+        color: "orange-text-gradient",
+      },
+      {
+        name: "aws-glue",
+        color: "pink-text-gradient",
+      },
+      {
+        name: "redshift",
+        color: "blue-text-gradient",
+      },
+      {
+        name: "python",
+        color: "green-text-gradient",
+      },
+      {
+        name: "docker",
+        color: "yellow-text-gradient",
+      }
+    ],
+    image: MimicWarehouse,
+    source_code_link: "https://github.com/shra012/mimic-iv-datawarehouse",
   }
 ];
 
