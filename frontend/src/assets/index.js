@@ -46,6 +46,7 @@ import terraform from "./tech/terraform.png";
 import spartan from "./company/spartan.png";
 import sastra from "./company/sastra.png";
 import bny from "./company/bny.png";
+import snowflake from "./company/snowflake.svg";
 import elsevier from "./company/elsevier.png";
 import tcs from "./company/tcs.png";
 import cts from "./company/cts.png";
@@ -100,6 +101,7 @@ export {
   spartan,
   sastra,
   bny,
+  snowflake,
   elsevier,
   cts,
   tcs,

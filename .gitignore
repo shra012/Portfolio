@@ -30,3 +30,6 @@ frontend/dist
 # Logs
 logs
 *.log
+
+# claude
+CLAUDE.md

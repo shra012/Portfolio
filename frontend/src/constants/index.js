@@ -42,6 +42,7 @@ import {
   spartan,
   sastra,
   bny,
+  snowflake,
   elsevier,
   tcs,
   cts,
@@ -148,6 +149,18 @@ const experiences = [
       "Coursework: Machine Learning, Deep Learning, Generative AI, Agentic AI, Big Data Algorithms, Distributed Systems, Data Warehousing, and Data Analysis.",
       "Served as an ISA for Data 220 Mathematics for Data Analytics, Data 228 Big Data, Data 226 Data Warehousing and Pipelines, and CMPE 172 Enterprise Software Systems.",
       "Applying these foundations to projects and research in LLMs, retrieval-augmented generation, semantic search, and autonomous agent workflows."
+    ],
+  },
+  {
+    title: "Data Engineering Intern",
+    company_name: "Snowflake",
+    icon: snowflake,
+    iconBg: "#FFFFFF",
+    date: "May 2026 - August 2026",
+    points: [
+      "Built an LLM-guided RBAC platform as a Snowflake Native App that converts natural-language access requests into automated provisioning plans, reducing manual effort and configuration errors.",
+      "Classified and blocked unsafe generated SQL with deterministic validators and prompt guardrails, raising pass@1 from 86% to 94% and blocking 100% of unsafe DDL/DML in eval; built the evaluation harness with pytest, Playwright, and Vitest.",
+      "Routed low-confidence and high-risk operations to human approvers across Slack, Jira, and Snowflake tasks and stages, executing only on sign-off and cutting turnaround from days to minutes."
     ],
   },
   {
