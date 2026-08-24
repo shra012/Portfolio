@@ -291,6 +291,8 @@ const projects = [
     ],
     image: MimicWarehouse,
     source_code_link: "https://github.com/shra012/mimic-iv-datawarehouse",
+    live_demo_link: "#/blog/mimic_iv_cost_warehouse",
+    live_demo_label: "View Analysis Report",
   }
 ];
 

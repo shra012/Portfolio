@@ -94,7 +94,7 @@ const Tech = () => {
     // Fallback 2D component
     return (
       <div 
-        className='w-20 h-20 sm:w-28 sm:h-28 flex items-center justify-center bg-gray-300 rounded-full hover:bg-[#915EFF] transition-colors duration-300 group'
+        className='w-20 h-20 sm:w-28 sm:h-28 flex items-center justify-center bg-black-100 rounded-full hover:bg-accent transition-colors duration-300 group'
         key={technology.name}
         title={technology.name}
       >
@@ -131,7 +131,7 @@ const Tech = () => {
         {/* Show performance info for debugging */}
         {(isChrome || isMobile) && (
           <div className="w-full text-center mb-4">
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-secondary">
               {isMobile ? "(3D icons disabled on mobile for performance)" : !webglSupported && " (WebGL not supported)"}
             </p>
           </div>

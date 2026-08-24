@@ -30,7 +30,7 @@ const Hero = () => {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className='w-5 h-5 rounded-full bg-[#915EFF]'
+            className='w-5 h-5 rounded-full bg-accent'
           />
           <motion.div
             initial={{ height: 0 }}
@@ -47,7 +47,7 @@ const Hero = () => {
             transition={{ duration: 0.5, delay: 0.4 }}
             className={`${styles.heroHeadText} text-white`}
           >
-            Hi, I'm <span className='text-[#915EFF]'>Shravan</span>
+            Hi, I'm <span className='text-accent'>Shravan</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, x: -50 }}

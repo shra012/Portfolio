@@ -5,6 +5,7 @@ import { styles } from "../styles";
 import { staggerContainer } from "../utils/motion";
 import blogData from "../constants/blogData";
 import { StarsCanvas } from "./canvas";
+import { useTheme } from "../contexts/ThemeContext";
 import hljs from 'highlight.js';
 import 'highlight.js/styles/atom-one-dark.css';
 
@@ -13,6 +14,8 @@ const BlogPost = () => {
   const post = blogData.find((p) => p.id === id);
   const [isReaderMode, setIsReaderMode] = useState(false);
   const [isDarkReader, setIsDarkReader] = useState(true);
+  const { isDark } = useTheme();
+  const useDarkCodeTheme = isReaderMode ? isDarkReader : isDark;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -25,9 +28,18 @@ const BlogPost = () => {
     preTags.forEach((pre) => {
       // Apply syntax highlighting
       const codeBlock = pre.querySelector('code');
-      if (codeBlock && !codeBlock.dataset.highlighted) {
-        hljs.highlightElement(codeBlock);
-        codeBlock.dataset.highlighted = 'true';
+      if (codeBlock) {
+        const languageClass = Array.from(codeBlock.classList)
+          .find((className) => className.startsWith('language-'));
+
+        pre.dataset.language = languageClass
+          ? languageClass.replace('language-', '')
+          : 'code';
+
+        if (!codeBlock.dataset.highlighted) {
+          hljs.highlightElement(codeBlock);
+          codeBlock.dataset.highlighted = 'true';
+        }
       }
 
       // Check if button already exists to avoid duplicates
@@ -36,6 +48,8 @@ const BlogPost = () => {
       const button = document.createElement('button');
       button.className = 'copy-button';
       button.innerText = 'Copy';
+      button.type = 'button';
+      button.setAttribute('aria-label', 'Copy code to clipboard');
 
       button.addEventListener('click', async () => {
         const code = pre.querySelector('code');
@@ -64,7 +78,7 @@ const BlogPost = () => {
     return (
       <div className='w-full h-screen flex flex-col items-center justify-center bg-primary'>
         <h2 className='text-white text-[32px] font-bold'>Post Not Found</h2>
-        <Link to='/blog' className='mt-5 text-[#915eff] underline'>
+        <Link to='/blog' className='mt-5 text-accent underline'>
           Back to Blog
         </Link>
       </div>
@@ -138,8 +152,8 @@ const BlogPost = () => {
         <div>
           {!isReaderMode && (
             <div className='flex items-center gap-3 mb-4'>
-              <span className='w-8 h-[2px] bg-[#915eff]' />
-              <p className='text-[#915eff] font-bold text-[14px] uppercase tracking-[4px]'>
+              <span className='w-8 h-[2px] bg-accent' />
+              <p className='text-accent font-bold text-[14px] uppercase tracking-[4px]'>
                 {post.type || "Article"}
               </p>
             </div>
@@ -164,8 +178,8 @@ const BlogPost = () => {
         {/* AI Summary Highlight */}
         {!isReaderMode && (
           <div className='bg-white/[0.03] backdrop-blur-sm p-8 rounded-3xl border border-white/10 shadow-2xl overflow-hidden relative'>
-            <div className='absolute top-0 left-0 w-1 h-full bg-[#915eff]/50' />
-            <p className='text-[#915eff] text-[14px] uppercase font-bold mb-2 tracking-widest opacity-80'>AI Generated Summary</p>
+            <div className='absolute top-0 left-0 w-1 h-full bg-accent/50' />
+            <p className='text-accent text-[14px] uppercase font-bold mb-2 tracking-widest opacity-80'>AI Generated Summary</p>
             <p className='text-white/90 italic text-[18px] leading-[32px]'>
               "{post.aiSummary}"
             </p>
@@ -174,7 +188,7 @@ const BlogPost = () => {
 
         {/* Main Content */}
         <div
-          className={`prose prose-lg blog-article max-w-none mb-20 transition-all duration-500 ${isReaderMode ? (isDarkReader ? 'prose-invert text-[#D1D5DB]' : 'prose-slate text-[#333333]') : 'prose-invert text-secondary text-[18px] leading-[32px] mt-4'}`}
+          className={`prose prose-lg blog-article ${useDarkCodeTheme ? 'code-theme-dark' : 'code-theme-light'} max-w-none mb-20 transition-all duration-500 ${isReaderMode ? (isDarkReader ? 'prose-invert text-[#D1D5DB]' : 'prose-slate text-[#333333]') : 'text-secondary text-[18px] leading-[32px] mt-4'}`}
           style={isReaderMode ? { fontSize: '21px', lineHeight: '1.85' } : {}}
           dangerouslySetInnerHTML={{ __html: post.content }}
         />

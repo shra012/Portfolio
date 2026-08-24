@@ -1,29 +1,51 @@
-import { useState, useRef, Suspense } from "react";
+import { useMemo, useRef, Suspense } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Points, PointMaterial, Preload } from "@react-three/drei";
 import * as random from "maath/random/dist/maath-random.esm";
 import CanvasLoader from '../Loader';
 import useMobile from "../../hooks/useMobile";
 import useWebglSupport from "../../hooks/useWebglSupport";
+import { useTheme } from "../../contexts/ThemeContext";
 
-const Stars = (props) => {
+// Night: dense far-off starfield. Day: sparse motes drifting through the sky.
+const FIELDS = {
+  dark: { count: 5000, radius: 1.2, color: '#f272c8', size: 0.002, spinX: 10, spinY: 15, opacity: 1 },
+  light: { count: 1200, radius: 1.4, color: '#d79a43', size: 0.0035, spinX: 30, spinY: 42, opacity: 0.34 },
+};
+
+const DaySky = () => (
+  <div className='day-sky' aria-hidden='true'>
+    <div className='day-sun' />
+    <div className='day-cloud day-cloud--one' />
+    <div className='day-cloud day-cloud--two' />
+    <div className='day-cloud day-cloud--three' />
+  </div>
+);
+
+const Field = ({ isDark, ...props }) => {
   const ref = useRef();
-  const [sphere] = useState(() => random.inSphere(new Float32Array(5000), { radius: 1.2 }));
+  const cfg = isDark ? FIELDS.dark : FIELDS.light;
+
+  const positions = useMemo(
+    () => random.inSphere(new Float32Array(cfg.count), { radius: cfg.radius }),
+    [cfg.count, cfg.radius]
+  );
 
   useFrame((state, delta) => {
     if (ref.current) {
-      ref.current.rotation.x -= delta / 10;
-      ref.current.rotation.y -= delta / 15;
+      ref.current.rotation.x -= delta / cfg.spinX;
+      ref.current.rotation.y -= delta / cfg.spinY;
     }
   });
 
   return (
     <group rotation={[0, 0, Math.PI / 4]}>
-      <Points ref={ref} positions={sphere} stride={3} frustumCulled {...props}>
+      <Points ref={ref} positions={positions} stride={3} frustumCulled {...props}>
         <PointMaterial
           transparent
-          color='#f272c8'
-          size={0.002}
+          color={cfg.color}
+          size={cfg.size}
+          opacity={cfg.opacity}
           sizeAttenuation={true}
           depthWrite={false}
         />
@@ -35,18 +57,25 @@ const Stars = (props) => {
 const StarsCanvas = () => {
   const isMobile = useMobile();
   const isWebglSupported = useWebglSupport();
-
-  // Disable 3D stars on mobile to save performance as per user request
-  if (isMobile || !isWebglSupported) return null;
+  const { isDark } = useTheme();
 
   return (
-    <div className='w-full h-auto absolute inset-0 z-[-1]'>
-      <Canvas camera={{ position: [0, 0, 1] }}>
-        <Suspense fallback={<CanvasLoader />}>
-          <Stars />
-        </Suspense>
-        <Preload all />
-      </Canvas>
+    <div className='absolute inset-0 z-[-1] overflow-hidden pointer-events-none'>
+      {!isDark && <DaySky />}
+
+      {!isMobile && isWebglSupported && (
+        <Canvas
+          className='atmosphere-canvas'
+          key={isDark ? 'dark' : 'light'}
+          camera={{ position: [0, 0, 1] }}
+          aria-hidden='true'
+        >
+          <Suspense fallback={<CanvasLoader />}>
+            <Field isDark={isDark} />
+          </Suspense>
+          <Preload all />
+        </Canvas>
+      )}
     </div>
   );
 };

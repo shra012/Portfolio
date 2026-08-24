@@ -2,19 +2,22 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx}"],
   mode: "jit",
-  darkMode: 'class',
+  darkMode: ['selector', '[data-theme="dark"]'],
   theme: {
     extend: {
       colors: {
-        primary: "#050816",
-        secondary: "#aaa6c3",
-        tertiary: "#151030",
-        "black-100": "#100d25",
-        "black-200": "#090325",
-        "white-100": "#f3f3f3",
+        primary: "rgb(var(--c-primary) / <alpha-value>)",
+        secondary: "rgb(var(--c-secondary) / <alpha-value>)",
+        tertiary: "rgb(var(--c-tertiary) / <alpha-value>)",
+        "black-100": "rgb(var(--c-black-100) / <alpha-value>)",
+        "black-200": "rgb(var(--c-black-200) / <alpha-value>)",
+        "white-100": "rgb(var(--c-white-100) / <alpha-value>)",
+        white: "rgb(var(--c-white) / <alpha-value>)",
+        black: "rgb(var(--c-black) / <alpha-value>)",
+        accent: "rgb(var(--c-accent) / <alpha-value>)",
       },
       boxShadow: {
-        card: "0px 35px 120px -15px #211e35",
+        card: "var(--shadow-card)",
       },
       screens: {
         xs: "450px",

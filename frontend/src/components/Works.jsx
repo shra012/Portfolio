@@ -16,6 +16,7 @@ const ProjectCard = ({
   image,
   source_code_link,
   live_demo_link,
+  live_demo_label,
 }) => {
   return (
     <motion.div variants={fadeIn("up", "spring", index * 0.5, 0.75)}>
@@ -37,7 +38,7 @@ const ProjectCard = ({
 
           <div
             onClick={() => window.open(source_code_link, "_blank")}
-            className='absolute top-2 right-2 w-10 h-10 rounded-full bg-black/80 backdrop-blur-[2px] flex justify-center items-center cursor-pointer'
+            className='absolute top-2 right-2 w-10 h-10 rounded-full bg-[#0b0f1a]/80 backdrop-blur-[2px] flex justify-center items-center cursor-pointer'
           >
             <img
               src={github}
@@ -69,7 +70,7 @@ const ProjectCard = ({
               onClick={() => window.open(live_demo_link, "_blank")}
               className='mt-auto px-6 py-3 bg-tertiary rounded-lg text-white font-medium hover:bg-tertiary/80 transition-all w-full text-center block border border-white'
             >
-              View Live Demo
+              {live_demo_label || "View Live Demo"}
             </button>
           )}
         </div>

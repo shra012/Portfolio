@@ -146,7 +146,15 @@ const Contact = () => {
       >
         <EarthCanvas />
       </motion.div>
-      <Toaster />
+      <Toaster
+        toastOptions={{
+          style: {
+            background: 'rgb(var(--c-tertiary))',
+            color: 'rgb(var(--c-white))',
+            border: '1px solid var(--surface-border)',
+          },
+        }}
+      />
     </div>
   );
 };

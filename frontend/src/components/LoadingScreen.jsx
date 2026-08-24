@@ -89,7 +89,7 @@ const LoadingScreen = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.6 }}
-                    className="w-64 h-2 bg-gray-800 rounded-full overflow-hidden mx-auto"
+                    className="w-64 h-2 bg-white/20 rounded-full overflow-hidden mx-auto"
                 >
                     <motion.div
                         initial={{ width: 0 }}

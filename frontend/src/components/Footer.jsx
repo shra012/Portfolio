@@ -16,7 +16,7 @@ const Footer = () => {
                             rel="noopener noreferrer"
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
-                            className="text-white hover:text-gray-300 transition-colors"
+                            className="text-white hover:text-accent transition-colors"
                         >
                             <FaGithub className="w-6 h-6" />
                         </motion.a>
@@ -26,7 +26,7 @@ const Footer = () => {
                             rel="noopener noreferrer"
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
-                            className="text-white hover:text-gray-300 transition-colors"
+                            className="text-white hover:text-accent transition-colors"
                         >
                             <FaLinkedin className="w-6 h-6" />
                         </motion.a>
@@ -34,14 +34,14 @@ const Footer = () => {
                             href="mailto:shravan.fisher@live.com"
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
-                            className="text-white hover:text-gray-300 transition-colors"
+                            className="text-white hover:text-accent transition-colors"
                         >
                             <FaEnvelope className="w-6 h-6" />
                         </motion.a>
                     </div>
 
                     {/* Copyright */}
-                    <div className="text-gray-400 text-sm">
+                    <div className="text-secondary text-sm">
                         © {currentYear} Shravankumar Nagarajan. All rights reserved.
                     </div>
                 </div>

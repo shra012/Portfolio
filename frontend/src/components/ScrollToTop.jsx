@@ -38,7 +38,7 @@ const ScrollToTop = () => {
             transition={{ duration: 0.3 }}
             onClick={scrollToTop}
             aria-label="Scroll to top"
-            className="w-11 h-11 sm:w-12 sm:h-12 bg-[#915EFF] text-white rounded-full flex items-center justify-center shadow-lg hover:bg-[#804dee] transition-colors focus:outline-none focus:ring-2 focus:ring-[#915EFF] focus:ring-offset-2 focus:ring-offset-primary"
+            className="w-11 h-11 sm:w-12 sm:h-12 bg-accent text-[#fff] rounded-full flex items-center justify-center shadow-lg hover:bg-accent/80 transition-colors focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary"
           >
             <HiArrowUp className="w-5 h-5 sm:w-6 sm:h-6" />
           </motion.button>

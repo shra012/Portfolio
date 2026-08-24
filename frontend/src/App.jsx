@@ -20,6 +20,7 @@ import {
 } from './components';
 import Footer from "./components/Footer";
 import { AuthProvider } from './contexts/AuthContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import FeedbackForm from './components/FeedbackForm';
 
 const App = () => {
@@ -61,11 +62,11 @@ const App = () => {
             transition={{ duration: 0.5 }}
             className="w-full flex-grow"
           >
+            <Navbar />
             <Routes>
               <Route path="/" element={
                 <>
                   <div className='bg-hero-pattern bg-cover bg-no-repeat bg-center'>
-                    <Navbar />
                     <Hero />
                   </div>
                   <About />
@@ -79,20 +80,13 @@ const App = () => {
                 </>
               } />
               <Route path="/blog" element={
-                <>
-                  <Navbar />
-                  <Blog />
-                </>
+                <Blog />
               } />
               <Route path="/blog/:id" element={
-                <>
-                  <Navbar />
-                  <BlogPost />
-                </>
+                <BlogPost />
               } />
               <Route path="/feedback" element={
                 <>
-                  <Navbar />
                   <StarsCanvas />
                   <FeedbackForm />
                 </>
@@ -106,15 +100,25 @@ const App = () => {
   };
 
   return (
-    <AuthProvider>
-      <Router>
+    <ThemeProvider>
+      <AuthProvider>
+        <Router>
         <div className='relative z-0 bg-primary min-h-screen flex flex-col overflow-x-hidden'>
           <AppContent />
           <Footer />
         </div>
-        <Toaster />
-      </Router>
-    </AuthProvider>
+          <Toaster
+            toastOptions={{
+              style: {
+                background: 'rgb(var(--c-tertiary))',
+                color: 'rgb(var(--c-white))',
+                border: '1px solid var(--surface-border)',
+              },
+            }}
+          />
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
   );
 };
 

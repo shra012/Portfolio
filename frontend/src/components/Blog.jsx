@@ -27,15 +27,15 @@ const BlogCard = ({ index, id, title, date, aiSummary, image, tags }) => (
       </div>
 
       <div className='mt-5'>
-        <h3 className='text-white font-bold text-[24px] leading-tight hover:text-[#915eff] transition-colors'>
+        <h3 className='text-white font-bold text-[24px] leading-tight hover:text-accent transition-colors'>
           {title}
         </h3>
         <p className='text-secondary text-[12px] mt-2 mb-3'>{date}</p>
         
         {/* AI Summary Section */}
         <div className='bg-white/[0.03] backdrop-blur-sm p-5 rounded-2xl border border-white/10 mb-4 relative overflow-hidden shadow-2xl'>
-          <div className='absolute top-0 left-0 w-1 h-full bg-[#915eff]/50' />
-          <p className='text-[#915eff] text-[10px] uppercase font-bold mb-1 tracking-wider opacity-80'>AI Summary</p>
+          <div className='absolute top-0 left-0 w-1 h-full bg-accent/50' />
+          <p className='text-accent text-[10px] uppercase font-bold mb-1 tracking-wider opacity-80'>AI Summary</p>
           <p className='text-white/80 text-[14px] italic leading-relaxed'>
             "{aiSummary}"
           </p>

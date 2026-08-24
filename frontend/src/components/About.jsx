@@ -59,7 +59,7 @@ const About = () => {
         download
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        className="inline-flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full font-medium hover:bg-gray-200 transition-colors mt-6"
+        className="inline-flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full font-medium hover:bg-white/80 transition-colors mt-6"
         aria-label="Download Shravankumar's Resume"
       >
         <HiDownload className="w-5 h-5" />

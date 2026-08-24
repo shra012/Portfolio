@@ -4,13 +4,67 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --c-primary: 5 8 22;
+  --c-secondary: 170 166 195;
+  --c-tertiary: 21 16 48;
+  --c-black-100: 16 13 37;
+  --c-black-200: 9 3 37;
+  --c-white-100: 243 243 243;
+  --c-white: 255 255 255;
+  --c-black: 0 0 0;
+  --c-accent: 145 94 255;
+
+  --shadow-card: 0px 35px 120px -15px #211e35;
+  --hero-pattern-opacity: 1;
+  --surface-border: rgba(255, 255, 255, 0.1);
+
+  /* Spinner dots and timeline chrome follow the ground they sit on. */
+  --loader-dot: 255 255 255;
+  --timeline-ring: 5 8 22;
+  /* Code and inline-code colors are overridden by the article's explicit
+     code-theme class so reader mode can differ from the site theme. */
+  --code-bg: 13 13 26;
+  --inline-code-bg: 255 255 255;
+  --inline-code-fg: 226 232 240;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --c-primary: 246 247 251;
+  --c-secondary: 82 90 115;
+  --c-tertiary: 255 255 255;
+  --c-black-100: 237 240 248;
+  --c-black-200: 225 229 240;
+  --c-white-100: 26 29 41;
+  --c-white: 26 29 41;
+  --c-black: 255 255 255;
+  --c-accent: 109 58 214;
+
+  --loader-dot: 26 29 41;
+  --timeline-ring: 246 247 251;
+  --inline-code-bg: 26 29 41;
+  --inline-code-fg: 61 43 110;
+
+  --shadow-card: 0px 18px 50px -18px rgba(38, 43, 74, 0.28);
+  --hero-pattern-opacity: 0.42;
+  --hero-pattern-filter: invert(1) hue-rotate(180deg) saturate(0.55);
+  --surface-border: rgba(26, 29, 41, 0.12);
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
   scroll-behavior: smooth;
-  color-scheme: dark;
 }
 
 html,
@@ -22,7 +76,153 @@ body,
 
 body {
   overflow-x: hidden;
-  background: #050816;
+  background: rgb(var(--c-primary));
+  transition: background-color 0.35s ease;
+}
+
+/* The hero artwork is authored for a dark canvas. Carry it on a pseudo-element
+   so the light theme can invert it into dark linework on a bright ground. */
+.bg-hero-pattern {
+  position: relative;
+  isolation: isolate;
+  background-image: none;
+  background-color: rgb(var(--c-primary));
+}
+
+.bg-hero-pattern::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: url("./assets/herobg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: var(--hero-pattern-opacity);
+  filter: var(--hero-pattern-filter, none);
+  pointer-events: none;
+}
+
+/* A quiet daytime counterpart to the night starfield behind contact forms. */
+.day-sky {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 82% 16%, rgba(255, 211, 105, 0.16), transparent 22%),
+    linear-gradient(180deg, rgba(125, 196, 255, 0.12), rgba(238, 247, 255, 0.03) 58%, transparent);
+  opacity: 0.82;
+}
+
+.day-sun {
+  position: absolute;
+  top: clamp(2.5rem, 8vw, 7rem);
+  right: clamp(2rem, 9vw, 9rem);
+  width: clamp(3.5rem, 7vw, 6.5rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(255, 210, 91, 0.3);
+  box-shadow:
+    0 0 0 1.2rem rgba(255, 213, 111, 0.07),
+    0 0 5rem 2.2rem rgba(255, 192, 76, 0.14);
+}
+
+.day-cloud {
+  --cloud-scale: 1;
+  position: absolute;
+  left: -18rem;
+  width: calc(10rem * var(--cloud-scale));
+  height: calc(2.4rem * var(--cloud-scale));
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.38);
+  filter: blur(0.3px);
+  box-shadow: 0 0.8rem 2.5rem rgba(91, 151, 199, 0.07);
+  animation: cloud-drift var(--cloud-duration) linear infinite;
+  animation-delay: var(--cloud-delay);
+}
+
+.day-cloud::before,
+.day-cloud::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  border-radius: 50%;
+  background: inherit;
+}
+
+.day-cloud::before {
+  left: 18%;
+  width: 42%;
+  aspect-ratio: 1;
+}
+
+.day-cloud::after {
+  right: 14%;
+  width: 31%;
+  aspect-ratio: 1;
+}
+
+.day-cloud--one {
+  --cloud-scale: 0.9;
+  --cloud-duration: 52s;
+  --cloud-delay: -19s;
+  top: 20%;
+  opacity: 0.55;
+}
+
+.day-cloud--two {
+  --cloud-scale: 1.25;
+  --cloud-duration: 68s;
+  --cloud-delay: -48s;
+  top: 47%;
+  opacity: 0.36;
+}
+
+.day-cloud--three {
+  --cloud-scale: 0.7;
+  --cloud-duration: 59s;
+  --cloud-delay: -7s;
+  top: 73%;
+  opacity: 0.3;
+}
+
+/* The globe was authored for a dark scene. A contained sky wash and gentler
+   rendering in light mode keep its dark materials from feeling pasted onto
+   the white page. */
+.earth-stage {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  transition: background-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.earth-stage canvas {
+  filter: saturate(1) brightness(1) contrast(1);
+  transition: filter 0.45s ease;
+}
+
+[data-theme="light"] .earth-stage {
+  background:
+    radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.94) 0 23%, transparent 58%),
+    radial-gradient(circle at 50% 54%, rgba(135, 199, 255, 0.16), transparent 67%);
+  box-shadow: inset 0 0 0 1px rgba(73, 91, 129, 0.06);
+}
+
+[data-theme="light"] .earth-stage canvas {
+  filter: saturate(0.82) brightness(1.08) contrast(0.92);
+}
+
+@keyframes cloud-drift {
+  to {
+    transform: translateX(calc(100vw + 36rem));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .day-cloud {
+    animation-play-state: paused;
+  }
 }
 
 .hash-span {
@@ -32,17 +232,12 @@ body {
 }
 
 .black-gradient {
-  background: #000000; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #434343,
-    #000000
-  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: rgb(var(--c-black)); /* fallback for old browsers */
   background: linear-gradient(
     to right,
-    #434343,
-    #000000
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    rgb(var(--c-black) / 0.72),
+    rgb(var(--c-black))
+  );
 }
 
 .violet-gradient {
@@ -196,97 +391,250 @@ body {
 @keyframes mulShdSpin {
   0%,
   100% {
-    box-shadow: 0em -2.6em 0em 0em #ffffff,
-      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2),
-      2.5em 0em 0 0em rgba(255, 255, 255, 0.2),
-      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2),
-      0em 2.5em 0 0em rgba(255, 255, 255, 0.2),
-      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2),
-      -2.6em 0em 0 0em rgba(255, 255, 255, 0.5),
-      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.7);
+    box-shadow: 0em -2.6em 0em 0em rgb(var(--loader-dot)),
+      1.8em -1.8em 0 0em rgb(var(--loader-dot) / 0.2),
+      2.5em 0em 0 0em rgb(var(--loader-dot) / 0.2),
+      1.75em 1.75em 0 0em rgb(var(--loader-dot) / 0.2),
+      0em 2.5em 0 0em rgb(var(--loader-dot) / 0.2),
+      -1.8em 1.8em 0 0em rgb(var(--loader-dot) / 0.2),
+      -2.6em 0em 0 0em rgb(var(--loader-dot) / 0.5),
+      -1.8em -1.8em 0 0em rgb(var(--loader-dot) / 0.7);
   }
   12.5% {
-    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.7),
-      1.8em -1.8em 0 0em #ffffff, 2.5em 0em 0 0em rgba(255, 255, 255, 0.2),
-      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2),
-      0em 2.5em 0 0em rgba(255, 255, 255, 0.2),
-      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2),
-      -2.6em 0em 0 0em rgba(255, 255, 255, 0.2),
-      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.5);
+    box-shadow: 0em -2.6em 0em 0em rgb(var(--loader-dot) / 0.7),
+      1.8em -1.8em 0 0em rgb(var(--loader-dot)), 2.5em 0em 0 0em rgb(var(--loader-dot) / 0.2),
+      1.75em 1.75em 0 0em rgb(var(--loader-dot) / 0.2),
+      0em 2.5em 0 0em rgb(var(--loader-dot) / 0.2),
+      -1.8em 1.8em 0 0em rgb(var(--loader-dot) / 0.2),
+      -2.6em 0em 0 0em rgb(var(--loader-dot) / 0.2),
+      -1.8em -1.8em 0 0em rgb(var(--loader-dot) / 0.5);
   }
   25% {
-    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.5),
-      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.7), 2.5em 0em 0 0em #ffffff,
-      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2),
-      0em 2.5em 0 0em rgba(255, 255, 255, 0.2),
-      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2),
-      -2.6em 0em 0 0em rgba(255, 255, 255, 0.2),
-      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+    box-shadow: 0em -2.6em 0em 0em rgb(var(--loader-dot) / 0.5),
+      1.8em -1.8em 0 0em rgb(var(--loader-dot) / 0.7), 2.5em 0em 0 0em rgb(var(--loader-dot)),
+      1.75em 1.75em 0 0em rgb(var(--loader-dot) / 0.2),
+      0em 2.5em 0 0em rgb(var(--loader-dot) / 0.2),
+      -1.8em 1.8em 0 0em rgb(var(--loader-dot) / 0.2),
+      -2.6em 0em 0 0em rgb(var(--loader-dot) / 0.2),
+      -1.8em -1.8em 0 0em rgb(var(--loader-dot) / 0.2);
   }
   37.5% {
-    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2),
-      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.5),
-      2.5em 0em 0 0em rgba(255, 255, 255, 0.7), 1.75em 1.75em 0 0em #ffffff,
-      0em 2.5em 0 0em rgba(255, 255, 255, 0.2),
-      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2),
-      -2.6em 0em 0 0em rgba(255, 255, 255, 0.2),
-      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+    box-shadow: 0em -2.6em 0em 0em rgb(var(--loader-dot) / 0.2),
+      1.8em -1.8em 0 0em rgb(var(--loader-dot) / 0.5),
+      2.5em 0em 0 0em rgb(var(--loader-dot) / 0.7), 1.75em 1.75em 0 0em rgb(var(--loader-dot)),
+      0em 2.5em 0 0em rgb(var(--loader-dot) / 0.2),
+      -1.8em 1.8em 0 0em rgb(var(--loader-dot) / 0.2),
+      -2.6em 0em 0 0em rgb(var(--loader-dot) / 0.2),
+      -1.8em -1.8em 0 0em rgb(var(--loader-dot) / 0.2);
   }
   50% {
-    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2),
-      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2),
-      2.5em 0em 0 0em rgba(255, 255, 255, 0.5),
-      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.7), 0em 2.5em 0 0em #ffffff,
-      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2),
-      -2.6em 0em 0 0em rgba(255, 255, 255, 0.2),
-      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+    box-shadow: 0em -2.6em 0em 0em rgb(var(--loader-dot) / 0.2),
+      1.8em -1.8em 0 0em rgb(var(--loader-dot) / 0.2),
+      2.5em 0em 0 0em rgb(var(--loader-dot) / 0.5),
+      1.75em 1.75em 0 0em rgb(var(--loader-dot) / 0.7), 0em 2.5em 0 0em rgb(var(--loader-dot)),
+      -1.8em 1.8em 0 0em rgb(var(--loader-dot) / 0.2),
+      -2.6em 0em 0 0em rgb(var(--loader-dot) / 0.2),
+      -1.8em -1.8em 0 0em rgb(var(--loader-dot) / 0.2);
   }
   62.5% {
-    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2),
-      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2),
-      2.5em 0em 0 0em rgba(255, 255, 255, 0.2),
-      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.5),
-      0em 2.5em 0 0em rgba(255, 255, 255, 0.7), -1.8em 1.8em 0 0em #ffffff,
-      -2.6em 0em 0 0em rgba(255, 255, 255, 0.2),
-      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+    box-shadow: 0em -2.6em 0em 0em rgb(var(--loader-dot) / 0.2),
+      1.8em -1.8em 0 0em rgb(var(--loader-dot) / 0.2),
+      2.5em 0em 0 0em rgb(var(--loader-dot) / 0.2),
+      1.75em 1.75em 0 0em rgb(var(--loader-dot) / 0.5),
+      0em 2.5em 0 0em rgb(var(--loader-dot) / 0.7), -1.8em 1.8em 0 0em rgb(var(--loader-dot)),
+      -2.6em 0em 0 0em rgb(var(--loader-dot) / 0.2),
+      -1.8em -1.8em 0 0em rgb(var(--loader-dot) / 0.2);
   }
   75% {
-    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2),
-      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2),
-      2.5em 0em 0 0em rgba(255, 255, 255, 0.2),
-      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2),
-      0em 2.5em 0 0em rgba(255, 255, 255, 0.5),
-      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.7), -2.6em 0em 0 0em #ffffff,
-      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+    box-shadow: 0em -2.6em 0em 0em rgb(var(--loader-dot) / 0.2),
+      1.8em -1.8em 0 0em rgb(var(--loader-dot) / 0.2),
+      2.5em 0em 0 0em rgb(var(--loader-dot) / 0.2),
+      1.75em 1.75em 0 0em rgb(var(--loader-dot) / 0.2),
+      0em 2.5em 0 0em rgb(var(--loader-dot) / 0.5),
+      -1.8em 1.8em 0 0em rgb(var(--loader-dot) / 0.7), -2.6em 0em 0 0em rgb(var(--loader-dot)),
+      -1.8em -1.8em 0 0em rgb(var(--loader-dot) / 0.2);
   }
   87.5% {
-    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2),
-      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2),
-      2.5em 0em 0 0em rgba(255, 255, 255, 0.2),
-      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2),
-      0em 2.5em 0 0em rgba(255, 255, 255, 0.2),
-      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.5),
-      -2.6em 0em 0 0em rgba(255, 255, 255, 0.7), -1.8em -1.8em 0 0em #ffffff;
+    box-shadow: 0em -2.6em 0em 0em rgb(var(--loader-dot) / 0.2),
+      1.8em -1.8em 0 0em rgb(var(--loader-dot) / 0.2),
+      2.5em 0em 0 0em rgb(var(--loader-dot) / 0.2),
+      1.75em 1.75em 0 0em rgb(var(--loader-dot) / 0.2),
+      0em 2.5em 0 0em rgb(var(--loader-dot) / 0.2),
+      -1.8em 1.8em 0 0em rgb(var(--loader-dot) / 0.5),
+      -2.6em 0em 0 0em rgb(var(--loader-dot) / 0.7), -1.8em -1.8em 0 0em rgb(var(--loader-dot));
   }
 }
 
 /* Blog Code Block Styles */
 .prose pre {
-  background-color: #0d0d1a !important;
+  background-color: rgb(var(--code-bg)) !important;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px !important;
   margin: 1.5rem 0 !important;
-  padding: 1rem !important;
+  padding: 1.25rem 4.5rem 1.25rem 1.25rem !important;
   position: relative;
-  overflow: hidden;
+  overflow-x: auto;
+  box-shadow: 0 18px 45px rgba(4, 6, 18, 0.16);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(145, 94, 255, 0.5) transparent;
+}
+
+.prose pre code {
+  color: #e2e8f0 !important;
+  background-color: transparent !important;
+  padding: 0 !important;
 }
 
 .prose code {
-  color: #e2e8f0 !important;
   font-family: "Fira Code", "Courier New", Courier, monospace !important;
   font-size: 0.9rem !important;
-  background-color: transparent !important;
-  padding: 0 !important;
+}
+
+/* highlight.js ships with Atom One Dark; these scoped rules provide an
+   equally readable light palette without leaking into dark reader mode. */
+.blog-article.code-theme-light pre {
+  background-color: #ffffff !important;
+  border-color: #d4d4d4;
+  border-radius: 10px !important;
+  padding: 2.75rem 0 0 !important;
+  overflow: hidden;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+.blog-article.code-theme-light pre::before {
+  content: attr(data-language);
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2.75rem;
+  padding-left: 4.75rem;
+  border-bottom: 1px solid #d4d4d4;
+  background: #f3f3f3;
+  color: #616161;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 2.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.blog-article.code-theme-light pre::after {
+  content: "";
+  position: absolute;
+  top: 1.06rem;
+  left: 1.15rem;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 999px;
+  background: #f87171;
+  box-shadow: 1.05rem 0 #fbbf24, 2.1rem 0 #4ade80;
+}
+
+.blog-article.code-theme-light pre code {
+  display: block;
+  overflow-x: auto;
+  padding: 1.35rem 1.5rem 1.5rem !important;
+  color: #000000 !important;
+  font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+  font-size: clamp(0.78rem, 0.72rem + 0.2vw, 0.92rem) !important;
+  line-height: 1.75;
+  tab-size: 2;
+  scrollbar-width: thin;
+  scrollbar-color: #c1c1c1 transparent;
+}
+
+.blog-article.code-theme-light pre code::selection,
+.blog-article.code-theme-light pre code *::selection {
+  background: #add6ff;
+}
+
+.blog-article.code-theme-light .hljs-comment,
+.blog-article.code-theme-light .hljs-quote {
+  color: #008000 !important;
+  font-style: italic;
+}
+
+.blog-article.code-theme-light .hljs-keyword,
+.blog-article.code-theme-light .hljs-selector-tag,
+.blog-article.code-theme-light .hljs-doctag,
+.blog-article.code-theme-light .hljs-formula {
+  color: #0000ff !important;
+  font-weight: 400;
+}
+
+.blog-article.code-theme-light .hljs-title,
+.blog-article.code-theme-light .hljs-title.function_,
+.blog-article.code-theme-light .hljs-section,
+.blog-article.code-theme-light .hljs-name,
+.blog-article.code-theme-light .hljs-selector-id,
+.blog-article.code-theme-light .hljs-selector-class {
+  color: #795e26 !important;
+}
+
+.blog-article.code-theme-light .hljs-string,
+.blog-article.code-theme-light .hljs-regexp,
+.blog-article.code-theme-light .hljs-addition,
+.blog-article.code-theme-light .hljs-attribute,
+.blog-article.code-theme-light .hljs-meta .hljs-string {
+  color: #a31515 !important;
+}
+
+.blog-article.code-theme-light .hljs-number,
+.blog-article.code-theme-light .hljs-literal,
+.blog-article.code-theme-light .hljs-symbol,
+.blog-article.code-theme-light .hljs-bullet,
+.blog-article.code-theme-light .hljs-link {
+  color: #098658 !important;
+}
+
+.blog-article.code-theme-light .hljs-built_in,
+.blog-article.code-theme-light .hljs-type,
+.blog-article.code-theme-light .hljs-class .hljs-title {
+  color: #267f99 !important;
+}
+
+.blog-article.code-theme-light .hljs-variable,
+.blog-article.code-theme-light .hljs-template-variable,
+.blog-article.code-theme-light .hljs-params {
+  color: #001080 !important;
+}
+
+.blog-article.code-theme-light .hljs-attr,
+.blog-article.code-theme-light .hljs-property,
+.blog-article.code-theme-light .hljs-subst {
+  color: #001080 !important;
+}
+
+.blog-article.code-theme-light .hljs-meta {
+  color: #af00db !important;
+}
+
+.blog-article.code-theme-light .hljs-operator,
+.blog-article.code-theme-light .hljs-punctuation {
+  color: #000000 !important;
+}
+
+/* Inline code sits on the page ground, so it has to flip with the theme. */
+.prose :not(pre) > code {
+  color: rgb(var(--inline-code-fg)) !important;
+  background-color: rgb(var(--inline-code-bg) / 0.08) !important;
+  border: 1px solid var(--surface-border);
+  border-radius: 6px;
+  padding: 0.1em 0.38em !important;
+}
+
+.blog-article.code-theme-light :not(pre) > code {
+  color: #5b21b6 !important;
+  background-color: #ede9fe !important;
+  border-color: #ddd6fe;
+}
+
+.blog-article.code-theme-dark :not(pre) > code {
+  color: #e2e8f0 !important;
+  background-color: rgba(255, 255, 255, 0.07) !important;
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .code-block-wrapper {
@@ -310,7 +658,26 @@ body {
   z-index: 10;
 }
 
-pre:hover .copy-button {
+.code-theme-light .copy-button {
+  top: 0.48rem;
+  right: 0.65rem;
+  padding: 0.3rem 0.68rem;
+  background: #f3f3f3;
+  border-color: #c8c8c8;
+  color: #333333;
+  opacity: 1;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+}
+
+.code-theme-light .copy-button:hover {
+  background: #e5e5e5;
+  border-color: #a8a8a8;
+  color: #000000;
+}
+
+pre:hover .copy-button,
+pre:focus-within .copy-button,
+.copy-button:focus-visible {
   opacity: 1;
 }
 
@@ -373,6 +740,10 @@ pre:hover .copy-button {
   font-weight: 700;
 }
 
+.blog-article strong {
+  color: rgb(var(--c-white));
+}
+
 .blog-article.prose-invert strong {
   color: #f8fafc;
 }
@@ -386,4 +757,24 @@ pre:hover .copy-button {
   border-color: #22c55e;
   color: white;
   opacity: 1;
+}
+
+@media (hover: none) {
+  .copy-button {
+    opacity: 1;
+  }
+}
+
+/* react-vertical-timeline ships a light-page default (white rail, white icon
+   ring). Both vanish on whichever ground they don't match, so re-point them
+   at the theme tokens. */
+.vertical-timeline .vertical-timeline-element-icon {
+  box-shadow:
+    0 0 0 4px rgb(var(--timeline-ring)),
+    inset 0 2px 0 rgba(0, 0, 0, 0.08),
+    0 3px 0 4px rgba(0, 0, 0, 0.05);
+}
+
+.vertical-timeline .vertical-timeline-element-content {
+  box-shadow: var(--shadow-card);
 }
