@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { styles } from "../styles";
@@ -19,6 +19,14 @@ const BlogPost = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    if (isReaderMode) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
   }, [id, isReaderMode]);
 
   useEffect(() => {
@@ -91,7 +99,7 @@ const BlogPost = () => {
       initial='hidden'
       whileInView='show'
       viewport={{ once: true, amount: 0.25 }}
-      className={`relative z-0 min-h-screen transition-colors duration-500 ${isReaderMode ? (isDarkReader ? 'fixed inset-0 z-[100] bg-[#111111] overflow-y-auto text-gray-300 pt-10 pb-20 font-serif w-full' : 'fixed inset-0 z-[100] bg-[#FFFBF0] overflow-y-auto text-gray-900 pt-10 pb-20 font-serif w-full') : 'bg-primary pt-20'}`}>
+      className={`relative z-0 min-h-screen transition-colors duration-500 ${isReaderMode ? (isDarkReader ? 'fixed inset-0 z-[9999] bg-[#111111] overflow-y-auto text-gray-300 pt-10 pb-20 font-serif w-full' : 'fixed inset-0 z-[9999] bg-[#FFFBF0] overflow-y-auto text-gray-900 pt-10 pb-20 font-serif w-full') : 'bg-primary pt-20'}`}>
       <div className={`mx-auto flex flex-col gap-10 ${isReaderMode ? 'max-w-3xl px-6 sm:px-12 gap-8' : `${styles.paddingX} max-w-5xl`}`}>
         
         {/* Top Controls */}
