@@ -95,12 +95,13 @@ const BlogPost = () => {
   }
 
   return (
-    <motion.div 
+    <motion.div
       variants={staggerContainer()}
       initial='hidden'
       whileInView='show'
       viewport={{ once: true, amount: 0.25 }}
-      className={`relative z-0 min-h-screen transition-colors duration-500 ${isReaderMode ? (isDarkReader ? 'fixed inset-0 z-[9999] bg-[#111111] overflow-y-scroll text-gray-300 pt-10 pb-20 font-serif w-full scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-900' : 'fixed inset-0 z-[9999] bg-[#FFFBF0] overflow-y-scroll text-gray-900 pt-10 pb-20 font-serif w-full scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100') : 'bg-primary pt-20'}`}>
+      className={`relative z-0 min-h-screen transition-colors duration-500 ${isReaderMode ? 'reader-mode' : ''} ${isReaderMode ? (isDarkReader ? 'fixed inset-0 z-[9999] bg-[#111111] overflow-y-scroll text-gray-300 pt-10 pb-20 font-serif w-full reader-mode-dark' : 'fixed inset-0 z-[9999] bg-[#FFFBF0] overflow-y-scroll text-gray-900 pt-10 pb-20 font-serif w-full reader-mode-light') : 'bg-primary pt-20'}`}
+      style={isReaderMode ? { scrollbarWidth: 'thin', scrollbarColor: isDarkReader ? '#4B5563 transparent' : '#D1D5DB transparent' } : {}}>
       <div className={`mx-auto flex flex-col gap-10 ${isReaderMode ? 'max-w-3xl px-6 sm:px-12 gap-8 w-full' : `${styles.paddingX} max-w-5xl`}`}>
         
         {/* Top Controls */}
