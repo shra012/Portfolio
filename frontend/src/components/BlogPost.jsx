@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { styles } from "../styles";
@@ -16,6 +16,7 @@ const BlogPost = () => {
   const { isDark } = useTheme();
   const [isDarkReader, setIsDarkReader] = useState(isDark);
   const useDarkCodeTheme = isReaderMode ? isDarkReader : isDark;
+  const readerModeRef = useRef(null);
 
   useEffect(() => {
     if (isReaderMode) {
@@ -29,6 +30,16 @@ const BlogPost = () => {
       document.body.style.overflow = 'unset';
     };
   }, [id, isReaderMode, isDark]);
+
+  useEffect(() => {
+    if (!isReaderMode || !readerModeRef.current) return;
+    const scrollTop = readerModeRef.current.scrollTop;
+    requestAnimationFrame(() => {
+      if (readerModeRef.current) {
+        readerModeRef.current.scrollTop = scrollTop;
+      }
+    });
+  }, [isDarkReader]);
 
   useEffect(() => {
     // Add copy button to pre tags
@@ -97,7 +108,7 @@ const BlogPost = () => {
   return (
     <>
       {isReaderMode && (
-        <div className={`reader-mode fixed inset-0 z-[9999] ${isDarkReader ? 'bg-[#111111] reader-mode-dark' : 'bg-[#FFFBF0] reader-mode-light'} overflow-y-scroll`}
+        <div ref={readerModeRef} className={`reader-mode fixed inset-0 z-[9999] ${isDarkReader ? 'bg-[#111111] reader-mode-dark' : 'bg-[#FFFBF0] reader-mode-light'} overflow-y-scroll`}
           style={{ scrollbarWidth: 'thin', scrollbarColor: isDarkReader ? '#4B5563 transparent' : '#D1D5DB transparent' }}>
           <div className='mx-auto max-w-3xl px-6 sm:px-12 pt-10 pb-20 w-full'>
             {/* Top Controls Fixed */}
