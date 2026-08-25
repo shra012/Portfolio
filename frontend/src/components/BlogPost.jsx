@@ -13,21 +13,22 @@ const BlogPost = () => {
   const { id } = useParams();
   const post = blogData.find((p) => p.id === id);
   const [isReaderMode, setIsReaderMode] = useState(false);
-  const [isDarkReader, setIsDarkReader] = useState(true);
   const { isDark } = useTheme();
+  const [isDarkReader, setIsDarkReader] = useState(isDark);
   const useDarkCodeTheme = isReaderMode ? isDarkReader : isDark;
 
   useEffect(() => {
     window.scrollTo(0, 0);
     if (isReaderMode) {
       document.body.style.overflow = 'hidden';
+      setIsDarkReader(isDark);
     } else {
       document.body.style.overflow = 'unset';
     }
     return () => {
       document.body.style.overflow = 'unset';
     };
-  }, [id, isReaderMode]);
+  }, [id, isReaderMode, isDark]);
 
   useEffect(() => {
     // Add copy button to pre tags
@@ -99,8 +100,8 @@ const BlogPost = () => {
       initial='hidden'
       whileInView='show'
       viewport={{ once: true, amount: 0.25 }}
-      className={`relative z-0 min-h-screen transition-colors duration-500 ${isReaderMode ? (isDarkReader ? 'fixed inset-0 z-[9999] bg-[#111111] overflow-y-auto text-gray-300 pt-10 pb-20 font-serif w-full' : 'fixed inset-0 z-[9999] bg-[#FFFBF0] overflow-y-auto text-gray-900 pt-10 pb-20 font-serif w-full') : 'bg-primary pt-20'}`}>
-      <div className={`mx-auto flex flex-col gap-10 ${isReaderMode ? 'max-w-3xl px-6 sm:px-12 gap-8' : `${styles.paddingX} max-w-5xl`}`}>
+      className={`relative z-0 min-h-screen transition-colors duration-500 ${isReaderMode ? (isDarkReader ? 'fixed inset-0 z-[9999] bg-[#111111] overflow-y-scroll text-gray-300 pt-10 pb-20 font-serif w-full scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-900' : 'fixed inset-0 z-[9999] bg-[#FFFBF0] overflow-y-scroll text-gray-900 pt-10 pb-20 font-serif w-full scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100') : 'bg-primary pt-20'}`}>
+      <div className={`mx-auto flex flex-col gap-10 ${isReaderMode ? 'max-w-3xl px-6 sm:px-12 gap-8 w-full' : `${styles.paddingX} max-w-5xl`}`}>
         
         {/* Top Controls */}
         <div className="flex justify-between items-center z-10 relative">
