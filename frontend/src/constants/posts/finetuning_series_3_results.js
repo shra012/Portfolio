@@ -187,8 +187,8 @@ print(mcnemar_p(160, 130))   # 0.088     (TinyLoRA + GRPO)</code></pre>
   <path d="M872.8,390 V203.5 Q872.8,199.5 876.8,199.5 H894.8 Q898.8,199.5 898.8,203.5 V390 Z" fill="#2a78d6"><title>Weight-space programming, simple: 37.41%</title></path>
   <path d="M900.8,390 V293.0 Q900.8,289.0 904.8,289.0 H922.8 Q926.8,289.0 926.8,293.0 V390 Z" fill="#eb6834"><title>Weight-space programming, moderate: 19.83%</title></path>
   <path d="M928.8,390 V309.7 Q928.8,305.7 932.8,305.7 H950.8 Q954.8,305.7 954.8,309.7 V390 Z" fill="#1baf7a"><title>Weight-space programming, challenging: 16.55%</title></path>
-  <text x="913.8" y="412.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="600">Opus weight</text>
-  <text x="913.8" y="428.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="600">edit</text>
+  <text x="913.8" y="412.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="600">Weight-space</text>
+  <text x="913.8" y="428.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="600">programming</text>
   <line x1="70" y1="390" x2="970" y2="390" stroke="#94a3b8"/>
 </svg></div>
 <ul>
