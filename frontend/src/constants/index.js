@@ -263,7 +263,7 @@ const projects = [
     name: "text2sql-peft: Six Ways to Fine-Tune",
     category: "AI/ML",
     description:
-      "Compared six ways to adapt Qwen2.5-Coder-1.5B for text-to-SQL on the BIRD benchmark: full fine-tuning, LoRA, LoRA-FA, QLoRA, TinyLoRA with SFT and GRPO, and Claude Opus 5.5 editing the weights directly. QLoRA and LoRA lifted execution accuracy from 28.5% to about 42%; 13-parameter TinyLoRA and the LLM's hand edit fixed answer format but gained only about 2 points.",
+      "Compared six ways to adapt Qwen2.5-Coder-1.5B for text-to-SQL on the BIRD benchmark: full fine-tuning, LoRA, LoRA-FA, QLoRA, TinyLoRA with SFT and GRPO, and weight-space programming (Claude Opus 5.5 editing the weights directly). QLoRA and LoRA lifted execution accuracy from 28.5% to about 42%; 13-parameter TinyLoRA and the weight-space edit fixed answer format but gained only about 2 points.",
     tags: [
       { name: "lora", color: "blue-text-gradient" },
       { name: "grpo", color: "green-text-gradient" },

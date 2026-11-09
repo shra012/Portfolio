@@ -11,7 +11,7 @@ const post = {
 <p><em>This is part 3 of 3. <a href='#/blog/finetuning_series_1_methods'>Part 1</a> explains the five fine-tuning methods. <a href='#/blog/finetuning_series_2_how'>Part 2</a> explains how I tested them. This part is the results.</em></p>
 <p><em>About 23 min read.</em></p>
 <blockquote><p><strong>In short</strong></p><ul><li>LoRA and QLoRA added about 14 points (28.49% to 42%), and a significance test says that is real, not luck.</li><li>Full fine-tuning added only 7.6 points, likely held back by 16-bit rounding: 92% of its weights never changed.</li><li>TinyLoRA added 2 points with SFT and GRPO alike, which could be luck; what its 13 numbers learned was the answer format.</li><li>Bonus: Claude Opus 5.5 edited 48,398 weights directly, with no training at all. It removed the "let me explain first" habit completely and landed at +1.6 points, right next to TinyLoRA.</li></ul></blockquote>
-<p>Quick recap: I fine-tuned <code>Qwen2.5-Coder-1.5B-Instruct</code> (1.54 billion parameters) with the five methods from <a href='#/blog/finetuning_series_1_methods'>part 1</a>, training TinyLoRA twice: once with supervised fine-tuning (SFT) and once with reinforcement learning (GRPO). Each model then answered the same 1,534 BIRD dev questions, and an answer counts as correct when its SQL returns the same rows as the reference ("gold") SQL. That score is <strong>execution accuracy</strong> (EX); <a href='#/blog/finetuning_series_2_how'>part 2</a> has the setup. At the end there is a bonus sixth method: letting an LLM edit the weights directly.</p>
+<p>Quick recap: I fine-tuned <code>Qwen2.5-Coder-1.5B-Instruct</code> (1.54 billion parameters) with the five methods from <a href='#/blog/finetuning_series_1_methods'>part 1</a>, training TinyLoRA twice: once with supervised fine-tuning (SFT) and once with reinforcement learning (GRPO). Each model then answered the same 1,534 BIRD dev questions, and an answer counts as correct when its SQL returns the same rows as the reference ("gold") SQL. That score is <strong>execution accuracy</strong> (EX); <a href='#/blog/finetuning_series_2_how'>part 2</a> has the setup. At the end there is a bonus sixth method: weight-space programming, where an LLM edits the weights directly.</p>
 <h3>The scoreboard</h3>
 <p>Every run, plus the untouched base model and one extra row: the QLoRA patch served on top of the 4-bit model, the way you'd deploy it if memory is tight. "Correct" is the raw count out of 1,534, so you can check any score by hand: LoRA's 645 / 1,534 = 0.4205, or 42.05%.</p>
 <div style="overflow-x:auto;margin:1.9rem 0"><table><thead><tr><th>Method</th><th class='num'>Trainable params</th><th class='num'>Correct</th><th class='num'>EX</th><th class='num'>Simple</th><th class='num'>Moderate</th><th class='num'>Challenging</th><th class='num'>Change vs base</th></tr></thead><tbody>
@@ -23,7 +23,7 @@ const post = {
 <tr><td>QLoRA, served in 4-bit</td><td class='num'>73.9M</td><td class='num'>636</td><td class='num'>41.46</td><td class='num'>48.54</td><td class='num'>32.11</td><td class='num'>26.21</td><td class='num'>+12.97</td></tr>
 <tr><td>TinyLoRA, SFT</td><td class='num'>13</td><td class='num'>467</td><td class='num'>30.44</td><td class='num'>36.97</td><td class='num'>21.12</td><td class='num'>18.62</td><td class='num'>+1.95</td></tr>
 <tr><td>TinyLoRA, GRPO</td><td class='num'>13</td><td class='num'>467</td><td class='num'>30.44</td><td class='num'>37.51</td><td class='num'>20.26</td><td class='num'>17.93</td><td class='num'>+1.95</td></tr>
-<tr><td>Opus weight edit (bonus, below)</td><td class='num'>48,398 changed</td><td class='num'>462</td><td class='num'>30.12</td><td class='num'>37.41</td><td class='num'>19.83</td><td class='num'>16.55</td><td class='num'>+1.63</td></tr>
+<tr><td>Weight-space programming (bonus, below)</td><td class='num'>48,398 changed</td><td class='num'>462</td><td class='num'>30.12</td><td class='num'>37.41</td><td class='num'>19.83</td><td class='num'>16.55</td><td class='num'>+1.63</td></tr>
 </tbody></table></div>
 <p>All numbers are percentages except the first two columns. "Change vs base" is in percentage points: 42.05 &minus; 28.49 = +13.56.</p>
 <div style="overflow-x:auto;margin:1.9rem 0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 470" style="width:100%;min-width:660px;height:auto;display:block" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" role="img" aria-label="Accuracy vs. how many numbers you train">
@@ -59,7 +59,7 @@ const post = {
   <text x="682.1" y="422" font-size="12" fill="#52514e" text-anchor="middle">10<tspan dy="-6" font-size="9">7</tspan></text>
   <text x="774.7" y="422" font-size="12" fill="#52514e" text-anchor="middle">10<tspan dy="-6" font-size="9">8</tspan></text>
   <text x="867.4" y="422" font-size="12" fill="#52514e" text-anchor="middle">10<tspan dy="-6" font-size="9">9</tspan></text>
-  <text x="520.0" y="448.0" font-size="13" fill="#52514e" text-anchor="middle" font-weight="400">Trainable numbers, or weights changed for the Opus edit (log scale)</text>
+  <text x="520.0" y="448.0" font-size="13" fill="#52514e" text-anchor="middle" font-weight="400">Trainable numbers, or weights changed for weight-space programming (log scale)</text>
   <line x1="80" y1="358.5" x2="960" y2="358.5" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>
   <text x="88.0" y="350.5" font-size="13" fill="#52514e" text-anchor="start" font-weight="400">Base model, no training: 28.49%</text>
   <circle cx="884.8" cy="231.5" r="8" fill="#2a78d6" stroke="#FCFCFB" stroke-width="2"><title>Full fine-tune: 36.11% with 1,543,714,304 trainable parameters</title></circle>
@@ -72,8 +72,8 @@ const post = {
   <text x="776.5" y="118.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">QLoRA 42.44%</text>
   <circle cx="136.9" cy="326.0" r="8" fill="#2a78d6" stroke="#FCFCFB" stroke-width="2"><title>TinyLoRA + SFT: 30.44% with 13 trainable parameters</title></circle>
   <circle cx="136.9" cy="326.0" r="8" fill="#2a78d6" stroke="#FCFCFB" stroke-width="2"><title>TinyLoRA + GRPO: 30.44% with 13 trainable parameters</title></circle>
-  <circle cx="467.6" cy="331.3" r="8" fill="#2a78d6" stroke="#FCFCFB" stroke-width="2"><title>Opus weight edit: 30.12% with 48,398 trainable parameters</title></circle>
-  <text x="481.6" y="319.3" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">Opus weight edit 30.12% (48,398 weights changed)</text>
+  <circle cx="467.6" cy="331.3" r="8" fill="#2a78d6" stroke="#FCFCFB" stroke-width="2"><title>Weight-space programming: 30.12% with 48,398 trainable parameters</title></circle>
+  <text x="481.6" y="319.3" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">Weight-space programming 30.12% (48,398 weights changed)</text>
   <text x="150.9" y="316.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">TinyLoRA, SFT and GRPO: 30.44% (both runs)</text>
   <text x="150.9" y="334.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="400">13 trainable numbers</text>
 </svg></div>
@@ -82,7 +82,7 @@ const post = {
 <li><strong>Every method beat the base model.</strong> Even 13 numbers moved the score a little.</li>
 <li><strong>The LoRA family won.</strong> LoRA, LoRA-FA and QLoRA landed between 40.55% and 42.44%: 12 to 14 points above the base model, or roughly 185 to 214 more correct answers.</li>
 <li><strong>More trainable numbers did not mean a better score.</strong> Full fine-tuning changed all 1.54 billion weights and scored 36.11%, six points below LoRA. I have a guess why, further down.</li>
-<li><strong>TinyLoRA barely moved.</strong> Both runs got 467 questions right, against 437 for the base model. The bonus weight edit by Opus landed next to them, at 462.</li>
+<li><strong>TinyLoRA barely moved.</strong> Both runs got 467 questions right, against 437 for the base model. Weight-space programming landed next to them, at 462.</li>
 </ul>
 <p>The x-axis in the picture is a log scale: each tick is ten times the one before. If more trainable numbers always helped, the dots would climb steadily to the right. Instead they climb, flatten, and drop at the far right.</p>
 <h3>Is it real or luck?</h3>
@@ -120,7 +120,7 @@ print(mcnemar_p(160, 130))   # 0.088     (TinyLoRA + GRPO)</code></pre>
 <tr><td>QLoRA, served in 4-bit</td><td class='num'>296</td><td class='num'>97</td><td class='num'>1.6 &times; 10<sup>-24</sup></td><td>real</td></tr>
 <tr><td>TinyLoRA, SFT</td><td class='num'>155</td><td class='num'>125</td><td class='num'>0.083</td><td>could be luck</td></tr>
 <tr><td>TinyLoRA, GRPO</td><td class='num'>160</td><td class='num'>130</td><td class='num'>0.088</td><td>could be luck</td></tr>
-<tr><td>Opus weight edit</td><td class='num'>97</td><td class='num'>72</td><td class='num'>0.065</td><td>could be luck</td></tr>
+<tr><td>Weight-space programming</td><td class='num'>97</td><td class='num'>72</td><td class='num'>0.065</td><td>could be luck</td></tr>
 </tbody></table></div>
 <p>The LoRA family's gains are not luck. TinyLoRA's are a different story: about an 8 to 9% chance under the coin-flip story. That doesn't prove TinyLoRA did nothing. It means this experiment can't tell its +1.95 points apart from noise.</p>
 <p>Notice that every method broke something: even LoRA broke 91 questions the base model got right. The same test also works between any two models:</p>
@@ -184,9 +184,9 @@ print(mcnemar_p(160, 130))   # 0.088     (TinyLoRA + GRPO)</code></pre>
   <path d="M816.2,390 V302.7 Q816.2,298.7 820.2,298.7 H838.2 Q842.2,298.7 842.2,302.7 V390 Z" fill="#1baf7a"><title>TinyLoRA + GRPO, challenging: 17.93%</title></path>
   <text x="801.2" y="412.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="600">TinyLoRA</text>
   <text x="801.2" y="428.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="600">+ GRPO</text>
-  <path d="M872.8,390 V203.5 Q872.8,199.5 876.8,199.5 H894.8 Q898.8,199.5 898.8,203.5 V390 Z" fill="#2a78d6"><title>Opus weight edit, simple: 37.41%</title></path>
-  <path d="M900.8,390 V293.0 Q900.8,289.0 904.8,289.0 H922.8 Q926.8,289.0 926.8,293.0 V390 Z" fill="#eb6834"><title>Opus weight edit, moderate: 19.83%</title></path>
-  <path d="M928.8,390 V309.7 Q928.8,305.7 932.8,305.7 H950.8 Q954.8,305.7 954.8,309.7 V390 Z" fill="#1baf7a"><title>Opus weight edit, challenging: 16.55%</title></path>
+  <path d="M872.8,390 V203.5 Q872.8,199.5 876.8,199.5 H894.8 Q898.8,199.5 898.8,203.5 V390 Z" fill="#2a78d6"><title>Weight-space programming, simple: 37.41%</title></path>
+  <path d="M900.8,390 V293.0 Q900.8,289.0 904.8,289.0 H922.8 Q926.8,289.0 926.8,293.0 V390 Z" fill="#eb6834"><title>Weight-space programming, moderate: 19.83%</title></path>
+  <path d="M928.8,390 V309.7 Q928.8,305.7 932.8,305.7 H950.8 Q954.8,305.7 954.8,309.7 V390 Z" fill="#1baf7a"><title>Weight-space programming, challenging: 16.55%</title></path>
   <text x="913.8" y="412.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="600">Opus weight</text>
   <text x="913.8" y="428.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="600">edit</text>
   <line x1="70" y1="390" x2="970" y2="390" stroke="#94a3b8"/>
@@ -209,7 +209,7 @@ print(mcnemar_p(160, 130))   # 0.088     (TinyLoRA + GRPO)</code></pre>
 <tr><td>QLoRA, served in 4-bit</td><td class='num'>316</td><td class='num'>270</td></tr>
 <tr><td>TinyLoRA, SFT</td><td class='num'>627</td><td class='num'>555</td></tr>
 <tr><td>TinyLoRA, GRPO</td><td class='num'>603</td><td class='num'>525</td></tr>
-<tr><td>Opus weight edit</td><td class='num'>653</td><td class='num'>582</td></tr>
+<tr><td>Weight-space programming</td><td class='num'>653</td><td class='num'>582</td></tr>
 </tbody></table></div>
 <p>LoRA cut "no such column" errors in half. And of the 299 questions LoRA fixed, 190 were questions where the base model had failed with "no such column". So almost two thirds of LoRA's gain is one lesson: <em>which column lives in which table</em>.</p>
 <h4>Example 1: the column is in the other table</h4>
@@ -283,8 +283,8 @@ print((w + 1e-5).item())    # 0.050048828125  (the update vanished)</code></pre>
   <text x="180.0" y="235.0" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="400">TinyLoRA + GRPO</text>
   <rect x="190" y="220" width="233.5" height="22" rx="4" fill="#2a78d6" stroke="#2a78d6"><title>TinyLoRA + GRPO: 1,433 of 1,534</title></rect>
   <text x="431.5" y="236.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600">1,433 of 1,534</text>
-  <text x="180.0" y="279.0" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="400">Opus weight edit</text>
-  <rect x="190" y="264" width="250.0" height="22" rx="4" fill="#2a78d6" stroke="#2a78d6"><title>Opus weight edit: 1,534 of 1,534</title></rect>
+  <text x="180.0" y="273.0" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="400"><tspan x="180.0">Weight-space</tspan><tspan x="180.0" dy="14">programming</tspan></text>
+  <rect x="190" y="264" width="250.0" height="22" rx="4" fill="#2a78d6" stroke="#2a78d6"><title>Weight-space programming: 1,534 of 1,534</title></rect>
   <text x="448.0" y="280.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600">1,534 of 1,534</text>
   <text x="180.0" y="323.0" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="400">LoRA</text>
   <rect x="190" y="308" width="250.0" height="22" rx="4" fill="#2a78d6" stroke="#2a78d6"><title>LoRA: 1,534 of 1,534</title></rect>
@@ -299,8 +299,8 @@ print((w + 1e-5).item())    # 0.050048828125  (the update vanished)</code></pre>
   <text x="660.0" y="235.0" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="400">TinyLoRA + GRPO</text>
   <rect x="670" y="220" width="85.4" height="22" rx="4" fill="#2a78d6" stroke="#2a78d6"><title>TinyLoRA + GRPO: 239</title></rect>
   <text x="763.4" y="236.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600">239</text>
-  <text x="660.0" y="279.0" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="400">Opus weight edit</text>
-  <rect x="670" y="264" width="58.6" height="22" rx="4" fill="#2a78d6" stroke="#2a78d6"><title>Opus weight edit: 164</title></rect>
+  <text x="660.0" y="273.0" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="400"><tspan x="660.0">Weight-space</tspan><tspan x="660.0" dy="14">programming</tspan></text>
+  <rect x="670" y="264" width="58.6" height="22" rx="4" fill="#2a78d6" stroke="#2a78d6"><title>Weight-space programming: 164</title></rect>
   <text x="736.6" y="280.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600">164</text>
   <text x="660.0" y="323.0" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="400">LoRA</text>
   <rect x="670" y="308" width="61.8" height="22" rx="4" fill="#2a78d6" stroke="#2a78d6"><title>LoRA: 173</title></rect>
@@ -436,7 +436,7 @@ print((w + 1e-5).item())    # 0.050048828125  (the update vanished)</code></pre>
 <li><strong>A short RL run.</strong> My GRPO run was 75 steps over 600 questions. The paper trains for far longer. RL might pull ahead of SFT with a bigger budget.</li>
 <li><strong>A smaller model.</strong> 1.5B parameters vs 7B. A bigger model may have more hidden ability for 13 numbers to unlock.</li>
 </ol>
-<h3>Bonus method 6: letting an LLM edit the weights</h3>
+<h3>Bonus method 6: weight-space programming</h3>
 <p>While I was writing this up, MIT CSAIL published <a href='https://rikiyat.github.io/blog/weight-space-programming/' target='_blank' rel='noopener noreferrer'>Sparks of Weight-Space Programming</a>. Instead of gradient descent, a frontier LLM read a small model's raw weights and edited them by hand. On Qwen3.5-0.8B it found a "looping" direction in two MLP layers, subtracted it from 0.016% of the weights, and MATH-500 went from 7.9% to 48.1%. Their own caveat: the edit fixed a habit that stopped the model from finishing, it did not make the model better at math. I repeated the experiment on my model, with <strong>Claude Opus 5.5</strong> as the editor, running as an agent.</p>
 <h4>The rules</h4>
 <ul>
@@ -458,7 +458,7 @@ W[:, S] += torch.outer(u, k[S])      # S = the 32 columns that matter most
 save_edit("model.layers.27.mlp.down_proj.weight", W)</code></pre>
 <p>Both vectors come from one step of linear algebra, not from training. 5 nats makes those two words about 150 times less likely at that one position. In total 48,398 weights changed, 0.003% of the model. On its practice questions the edit removed the habit but gained only about 1 question in 2,048, and it said so; it predicted any gain would show up on longer prompts.</p>
 <h4>The result</h4>
-<div style="overflow-x:auto;margin:1.9rem 0"><table><thead><tr><th>On the 1,534 dev questions</th><th class='num'>Base model</th><th class='num'>Opus weight edit</th></tr></thead><tbody>
+<div style="overflow-x:auto;margin:1.9rem 0"><table><thead><tr><th>On the 1,534 dev questions</th><th class='num'>Base model</th><th class='num'>Weight-space programming</th></tr></thead><tbody>
 <tr><td>Correct (EX)</td><td class='num'>437 (28.49%)</td><td class='num'>462 (30.12%)</td></tr>
 <tr><td>Answers that start straight with the SQL</td><td class='num'>838</td><td class='num'>1,534 (all)</td></tr>
 <tr><td>Answers that open with "Let..."</td><td class='num'>696</td><td class='num'>0</td></tr>
@@ -472,10 +472,11 @@ save_edit("model.layers.27.mlp.down_proj.weight", W)</code></pre>
 <p>Three candidates looked like wins: 96, 95 and 93 correct against F4's 91. Then each was re-tested on 256 fresh questions, and all three lost or tied: 81, 83 and 88 against F4's 88. None was kept.</p>
 <p>That is the <strong>winner's curse</strong>. Picture 44 fair coins, each flipped 256 times. By pure chance a few will land heads noticeably more than half the time, and if you only look at the best coins, they look special. Test 44 edits on small samples and some will "win" by luck. The fix is the one used here: never trust a winner until it wins again on questions it has never seen.</p>
 <p>So I ran a third round under rules written down before any test: at most 4 candidate edits, each with a predicted effect, tested against F4 on 1,024 fresh practice questions no earlier run had seen, and kept only if the gain was clearly not luck (p &lt; 0.05). The editor tested one candidate. It had noticed that table names with spaces or hyphens, like <code>Store Locations</code> or <code>voice-actors</code>, must be wrapped in quotes in SQL, but the model copies them bare from the schema comments and the query crashes. It found a signal in the last layer that fires exactly where such a quote is needed, and added a second small patch (64 more columns, 96,429 weights) that pushes the quote character up by 4.5 nats, about 90 times more likely, at those spots only. On the fresh questions: 25 fixed, 7 broken, p = 0.002, inside the range it had predicted. The first confirmed gain from editing by hand.</p>
-<p>Then the dev set: 30.05%, no change (15 fixed, 16 broken). The edit did not fail; the test set just rarely needs it. Of BIRD dev's 11 databases only one has a table name that needs quoting (<code>order</code>, a SQL keyword, in <code>financial</code>), and the bare name appears in 3 answers. That is the clearest lesson of method 6: a hand edit fixes exactly the habit you find, so it only pays off if your real data has that habit.</p>
+<p>Then the dev set: 30.05%, no change (15 fixed, 16 broken). The edit did not fail; the test set just rarely needs it. Of BIRD dev's 11 databases only one has a table name that needs quoting (<code>order</code>, a SQL keyword, in <code>financial</code>), and the bare name appears in 3 answers. That is the clearest lesson of method 6: a weight-space edit fixes exactly the habit you find, so it only pays off if your real data has that habit.</p>
 
 <h4>How it compares</h4>
 <p>It landed in the same place as TinyLoRA (30.12% vs 30.44%), for the same reason: it fixed the shape of the answer, not the model's knowledge of the databases. The two are still different models; they disagree on 217 questions. It is also the story MIT tells. Their looping stopped 93% of answers from ever finishing, so removing it unlocked a lot. My model's rambling usually still ended with a SQL block, so removing it unlocked little. Editing weights by hand can remove an obstacle you can see. It could not teach the model which column lives in which table.</p>
+<p><strong>Verdict:</strong> weight-space programming was greeted as a breakthrough, but on my task it was overhyped: 30.12% against the base model's 28.49% (p = 0.065, could be luck), gained by removing a habit rather than teaching anything new.</p>
 <h3>What it cost</h3>
 <p>Accuracy is half the story. The other half: memory, time, and what you store afterwards. <a href='#/blog/finetuning_series_2_how'>Part 2</a> explains where the memory and time go.</p>
 <div style="overflow-x:auto;margin:1.9rem 0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 400" style="width:100%;min-width:660px;height:auto;display:block" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" role="img" aria-label="What each run cost">
@@ -538,7 +539,7 @@ save_edit("model.layers.27.mlp.down_proj.weight", W)</code></pre>
 <li><strong>Full fine-tuning: only if you can do it properly.</strong> That means enough memory for 32-bit master weights, and probably more steps. Done the cheap way, as I had to, it lost to LoRA.</li>
 <li><strong>LoRA-FA:</strong> within 1.5 points of LoRA with 44% fewer trainable numbers. A fine option, but here QLoRA saved more memory and scored higher.</li>
 <li><strong>TinyLoRA:</strong> for tiny behaviour changes, like answer format or length, not for teaching the model about the databases. To try it with RL, pick a task with an automatic grader that needs a skill the model mostly has already, and plan for a long run.</li>
-<li><strong>Letting an LLM edit the weights:</strong> a promising tool for removing one specific habit you can see and measure, with no training run. It did not add knowledge here, and it needs a strong editor model and careful checking.</li>
+<li><strong>Weight-space programming:</strong> a promising tool for removing one specific habit you can see and measure, with no training run. It did not add knowledge here, and it needs a strong editor model and careful checking.</li>
 </ul>
 <h3>Fine-tune your own model: a checklist</h3>
 <p>Everything this series taught me, in the order I would do it next time:</p>
@@ -550,7 +551,7 @@ save_edit("model.layers.27.mlp.down_proj.weight", W)</code></pre>
 <li><strong>Keep everything else fixed when comparing.</strong> Same data, same order, same steps, same prompt. Otherwise you are comparing setups, not methods.</li>
 <li><strong>Judge with paired counts, not averages.</strong> Count fixed vs broke questions and check whether the split could be a coin flip (McNemar's test, above).</li>
 <li><strong>Confirm winners on fresh data.</strong> If you tried many variants, the best one is probably partly lucky (the winner's curse, above).</li>
-<li><strong>Look at what changed, not just the score.</strong> TinyLoRA and the hand edit barely moved the score but changed every answer's format. That is a real effect, and you only see it by reading the outputs.</li>
+<li><strong>Look at what changed, not just the score.</strong> TinyLoRA and the weight-space edit barely moved the score but changed every answer's format. That is a real effect, and you only see it by reading the outputs.</li>
 </ol>
 
 <h3>The infographic: what held, what didn't</h3>
