@@ -732,8 +732,58 @@ pre:focus-within .copy-button,
   line-height: 1.75;
 }
 
+/* Links: tinted at rest so they are findable, clearly interactive on hover/focus.
+   The code-theme-* class on the article tracks the active theme in normal and reader view. */
+.blog-article a {
+  color: #a78bfa;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  border-radius: 4px;
+  transition: color 0.15s ease, text-decoration-color 0.15s ease, background-color 0.15s ease;
+}
+
+.blog-article a:hover,
+.blog-article a:focus-visible {
+  color: #c4b5fd;
+  text-decoration-color: currentColor;
+  background-color: rgba(167, 139, 250, 0.14);
+}
+
+.blog-article a:focus-visible {
+  outline: 2px solid #a78bfa;
+  outline-offset: 2px;
+}
+
+.blog-article.code-theme-light a {
+  color: #6d28d9;
+}
+
+.blog-article.code-theme-light a:hover,
+.blog-article.code-theme-light a:focus-visible {
+  color: #5b21b6;
+  background-color: rgba(109, 40, 217, 0.1);
+}
+
+.blog-article.code-theme-light a:focus-visible {
+  outline-color: #6d28d9;
+}
+
+/* Tailwind's preflight strips list markers; numbered steps need their numbers back. */
+.blog-article ol {
+  list-style: decimal outside;
+  padding-left: 1.6rem;
+}
+
 .blog-article ol li {
-  margin-left: 1.2rem;
+  padding-left: 0.3rem;
+}
+
+.blog-article ol li::marker {
+  color: #8b5cf6;
+  font-weight: 700;
 }
 
 .blog-article strong {
@@ -750,6 +800,63 @@ pre:focus-within .copy-button,
 
 .blog-article.prose-slate strong {
   color: #111827;
+}
+
+/* Sub-section headings, tables and quotes: colours derive from currentColor so they read
+   correctly on the dark site, the light site theme, and both reader-mode papers. */
+.blog-article h4 {
+  font-size: clamp(1.1rem, 0.95rem + 0.5vw, 1.35rem);
+  line-height: 1.4;
+  font-weight: 700;
+  margin-top: 1.6rem;
+  margin-bottom: 0.6rem;
+}
+
+.blog-article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.92em;
+  line-height: 1.5;
+}
+
+.blog-article th,
+.blog-article td {
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+}
+
+.blog-article th {
+  font-weight: 700;
+  background: color-mix(in srgb, #8b5cf6 12%, transparent);
+  border-bottom: 2px solid color-mix(in srgb, #8b5cf6 45%, transparent);
+}
+
+.blog-article tbody tr:hover td,
+.blog-article table tr:hover td {
+  background: color-mix(in srgb, currentColor 4%, transparent);
+}
+
+.blog-article th.num,
+.blog-article td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.blog-article blockquote {
+  margin: 1.4rem 0;
+  padding: 0.8rem 1.2rem;
+  border-left: 4px solid #8b5cf6;
+  background: color-mix(in srgb, #8b5cf6 8%, transparent);
+  border-radius: 0 0.6rem 0.6rem 0;
+  font-style: italic;
+}
+
+.blog-article blockquote p {
+  margin: 0;
 }
 
 .copy-button.copied {

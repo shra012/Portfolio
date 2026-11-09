@@ -223,7 +223,7 @@ const BlogPost = () => {
 
         {/* Main Content */}
         <div
-          className='prose prose-lg blog-article code-theme-dark max-w-none mb-20 transition-all duration-500 text-secondary text-[18px] leading-[32px] mt-4'
+          className={`prose prose-lg blog-article ${useDarkCodeTheme ? 'code-theme-dark' : 'code-theme-light'} max-w-none mb-20 transition-all duration-500 text-secondary text-[18px] leading-[32px] mt-4`}
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
       </div>
