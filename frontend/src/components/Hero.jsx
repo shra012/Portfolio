@@ -55,7 +55,7 @@ const Hero = () => {
             transition={{ duration: 0.5, delay: 0.6 }}
             className={`${styles.heroSubText} mt-2 text-white-100`}
           >
-            Versatile Fullstack AI Engineer passionate about LLMs, ML/DL, problem solving, and creating impactful solutions.
+            Senior AI Engineer building LLM agents, search, and robot-learning systems, on nearly a decade of production backend engineering.
           </motion.p>
         </div>
       </div>

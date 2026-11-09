@@ -53,7 +53,15 @@ import cts from "./company/cts.png";
 import accenture from "./company/accenture.png";
 
 import ClaimsGuard from "./claims-guard.png";
-import MimicWarehouse from "./mimic-iv-dw.svg";
+import projWildTrace from "./projects/wildtrace.jpg";
+import projText2Sql from "./projects/text2sql-peft.jpg";
+import projKryptonxWatch from "./projects/kryptonxwatch.jpg";
+import projCXRayGPT from "./projects/cxraygpt.jpg";
+import projAries2 from "./projects/aries2-npu-sr.jpg";
+import projFastF1 from "./projects/fast-f1-streaming.jpg";
+import projMimic from "./projects/mimic-iv-warehouse.jpg";
+import projKayak from "./projects/kayak-clone.jpg";
+import projAirbnb from "./projects/airbnb-clone.jpg";
 
 export {
   logo,
@@ -108,5 +116,13 @@ export {
   tcs,
   accenture,
   ClaimsGuard,
-  MimicWarehouse
+  projWildTrace,
+  projText2Sql,
+  projKryptonxWatch,
+  projCXRayGPT,
+  projAries2,
+  projFastF1,
+  projMimic,
+  projKayak,
+  projAirbnb
 };

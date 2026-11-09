@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Tilt } from "react-tilt";
 import { motion } from "framer-motion";
 
 import { styles } from "../styles";
 import { github } from "../assets";
 import { SectionWrapper } from "../hoc";
-import { projects } from "../constants";
+import { projects, projectCategories } from "../constants";
 import { fadeIn, textVariant } from "../utils/motion";
 
 const ProjectCard = ({
@@ -19,7 +19,12 @@ const ProjectCard = ({
   live_demo_label,
 }) => {
   return (
-    <motion.div variants={fadeIn("up", "spring", index * 0.5, 0.75)}>
+    <motion.div
+      variants={fadeIn("up", "spring", (index % 3) * 0.15, 0.75)}
+      initial='hidden'
+      whileInView='show'
+      viewport={{ once: true, amount: 0.15 }}
+    >
       <Tilt
         options={{
           max: 45,
@@ -79,7 +84,22 @@ const ProjectCard = ({
   );
 };
 
+const ProjectGrid = ({ items }) => (
+  <div className='mt-10 flex flex-wrap gap-7 justify-center'>
+    {items.map((project, index) => (
+      <ProjectCard key={project.name} index={index} {...project} />
+    ))}
+  </div>
+);
+
 const Works = () => {
+  const [active, setActive] = useState("All");
+  const tabs = ["All", ...projectCategories];
+  const groups = projectCategories
+    .filter((category) => active === "All" || active === category)
+    .map((category) => ({ category, items: projects.filter((p) => p.category === category) }))
+    .filter((group) => group.items.length > 0);
+
   return (
     <>
       <motion.div variants={textVariant()}>
@@ -92,21 +112,44 @@ const Works = () => {
           variants={fadeIn("", "", 0.1, 1)}
           className='mt-3 text-secondary text-[17px] max-w-3xl leading-[30px]'
         >
-          Following projects showcase my skills and experience through
-          real-world examples of my work. Each project is briefly described with
-          links to code repositories and live demos in it. It reflects my
-          ability to solve complex problems, work with different technologies,
-          and manage projects effectively.
+          Selected work across AI and machine learning, data engineering, and software engineering. Each
+          project links to its code, and to a demo, video, or write-up where one exists.
         </motion.p>
       </div>
 
-      <div className='mt-20 flex flex-wrap gap-7 justify-center'>
-        {projects.map((project, index) => (
-          <ProjectCard key={`project-${index}`} index={index} {...project} />
-        ))}
+      <div className='mt-10 flex flex-wrap gap-3' role='tablist' aria-label='Project categories'>
+        {tabs.map((tab) => {
+          const count = tab === "All" ? projects.length : projects.filter((p) => p.category === tab).length;
+          const selected = active === tab;
+          return (
+            <button
+              key={tab}
+              role='tab'
+              aria-selected={selected}
+              onClick={() => setActive(tab)}
+              className={`px-4 py-2 rounded-full text-[14px] font-semibold border transition-colors ${
+                selected
+                  ? "bg-accent text-white border-accent"
+                  : "bg-tertiary text-secondary border-white/10 hover:text-white hover:border-white/30"
+              }`}
+            >
+              {tab} <span className='opacity-70'>({count})</span>
+            </button>
+          );
+        })}
       </div>
+
+      {groups.map(({ category, items }) => (
+        <section key={category} className='mt-14'>
+          <h3 className='text-white font-bold text-[24px] sm:text-[28px] flex items-center gap-3'>
+            <span className='w-8 h-[2px] bg-accent' />
+            {category}
+          </h3>
+          <ProjectGrid items={items} />
+        </section>
+      ))}
     </>
   );
 };
 
-export default SectionWrapper(Works, "");
+export default SectionWrapper(Works, "", "some");
