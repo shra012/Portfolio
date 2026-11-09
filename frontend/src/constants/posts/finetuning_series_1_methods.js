@@ -1,6 +1,6 @@
 const post = {
   id: "finetuning_series_1_methods",
-  title: "Fine-tuning, explained: 5 ways to teach a model",
+  title: "Fine-tuning explained: 5 ways to teach an AI model",
   date: "November 07, 2026",
   part: 1,
   aiSummary: "A beginner-friendly walk through what fine-tuning is (weights as grids of numbers, loss, gradients, and why training needs far more memory than the model itself), followed by full fine-tuning, LoRA, LoRA-FA, QLoRA and TinyLoRA, each with a hand-checkable toy example, a diagram and short Python code. It ends with the two ways to teach a model, SFT and RL, and a worked GRPO example, setting up the experiments in parts 2 and 3.",
@@ -14,7 +14,7 @@ const post = {
 
 <h3>The infographic that started this</h3>
 <p>A fine-tuning infographic has been going around LinkedIn. It shows five ways to fine-tune a language model: <strong>full fine-tuning, LoRA, LoRA-FA, QLoRA and TinyLoRA</strong>. For a 70B model it says LoRA trains about 1.2% of the parameters, LoRA-FA about 0.6%, and TinyLoRA only <strong>13 parameters</strong>. A footnote adds that TinyLoRA only works with reinforcement learning, and that supervised fine-tuning needs 100 to 1000 times more.</p>
-<p>Thirteen numbers changing how a model behaves? That sounded either brilliant or wrong, so I tried all five myself on one task, with one small model, on one laptop GPU.</p>
+<p>Thirteen numbers changing how a model behaves? That sounded either brilliant or wrong, so I tried all five myself on one task with one small model.</p>
 <p>This series has three parts:</p>
 <ul>
 <li><strong>Part 1 (this one):</strong> what fine-tuning is, and how each of the five methods works, with tiny examples you can check by hand and short code.</li>
@@ -186,7 +186,7 @@ new w      = w - 0.1 × gradient  = 0.5 - 0.1 × (-4) = 0.9</code></pre>
   <text x="500.9" y="247.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="700">3.1 (8-bit)</text>
   <text x="562.2" y="247.0" font-size="14" fill="#0b0b0b" text-anchor="start" font-weight="700">6.2 GB on GPU</text>
   <line x1="770.0" y1="120.0" x2="770.0" y2="312.0" stroke="#0b0b0b" stroke-width="2" stroke-dasharray="6 5"/>
-  <text x="764.0" y="334.0" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="600">16 GB laptop GPU</text>
+  <text x="764.0" y="334.0" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="600">16 GB GPU</text>
   <text x="455.5" y="290.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="400">8-bit Adam state lives in CPU RAM (paged)</text>
   <text x="28.0" y="334.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="400">Counts for 1.54B parameters. Activations not shown.</text>
 </svg></div>
@@ -880,7 +880,7 @@ save_edit("model.layers.27.mlp.down_proj.weight", W)</code></pre>
 <li><strong>KL penalty</strong>: a cost for drifting from the original model; not used here.</li>
 </ul>
 
-<p><strong>Next:</strong> <a href='#/blog/finetuning_series_2_how'>Part 2: How I tested them: text-to-SQL on BIRD with one laptop GPU</a>. It covers the task, the grader, running model-written SQL safely, and the exact training setup for all five methods.</p>
+<p><strong>Next:</strong> <a href='#/blog/finetuning_series_2_how'>Part 2: How I tested them: teaching AI to write SQL</a>. It covers the task, the grader, running model-written SQL safely, and the exact training setup for all five methods.</p>
 
 `,
 };

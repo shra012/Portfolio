@@ -1,6 +1,6 @@
 const post = {
   id: "finetuning_series_3_results",
-  title: "The results: what 13 parameters and 74 million parameters got me",
+  title: "The results: which fine-tuning method won?",
   date: "November 07, 2026",
   part: 3,
   aiSummary: "Part 3 of 3: the results of fine-tuning Qwen2.5-Coder-1.5B five ways on the BIRD text-to-SQL benchmark. LoRA and QLoRA lifted execution accuracy from 28.49% to about 42% (a gain McNemar's test says is not luck), full fine-tuning reached 36.11% with 92% of its 16-bit weights never changing, and TinyLoRA's 13 numbers mostly changed the answer format, scoring 30.44% with both SFT and GRPO. A bonus sixth method lets Claude Opus 5.5 edit 48,398 weights directly with no training: it removes the model's habit of explaining before answering and lands at 30.12%. Includes a coin-flip explanation of the significance test, real before/after SQL, costs, and honest caveats.",
@@ -478,9 +478,9 @@ save_edit("model.layers.27.mlp.down_proj.weight", W)</code></pre>
 <p>It landed in the same place as TinyLoRA (30.12% vs 30.44%), for the same reason: it fixed the shape of the answer, not the model's knowledge of the databases. The two are still different models; they disagree on 217 questions. It is also the story MIT tells. Their looping stopped 93% of answers from ever finishing, so removing it unlocked a lot. My model's rambling usually still ended with a SQL block, so removing it unlocked little. Editing weights by hand can remove an obstacle you can see. It could not teach the model which column lives in which table.</p>
 <h3>What it cost</h3>
 <p>Accuracy is half the story. The other half: memory, time, and what you store afterwards. <a href='#/blog/finetuning_series_2_how'>Part 2</a> explains where the memory and time go.</p>
-<div style="overflow-x:auto;margin:1.9rem 0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 400" style="width:100%;min-width:660px;height:auto;display:block" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" role="img" aria-label="What each run cost on one 16 GB laptop GPU">
+<div style="overflow-x:auto;margin:1.9rem 0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 400" style="width:100%;min-width:660px;height:auto;display:block" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" role="img" aria-label="What each run cost">
   <rect width="1000" height="400" rx="14" fill="#FCFCFB" stroke="#E2E8F0" stroke-width="2"/>
-  <text x="28" y="40" font-size="19" font-weight="700" fill="#0b0b0b">What each run cost on one 16 GB laptop GPU</text>
+  <text x="28" y="40" font-size="19" font-weight="700" fill="#0b0b0b">What each run cost</text>
   <text x="28" y="64" font-size="14" fill="#52514e">Peak GPU memory and wall-clock training time. GRPO also runs a second model copy to sample answers.</text>
   <text x="40.0" y="98.0" font-size="14" fill="#0b0b0b" text-anchor="start" font-weight="700">Peak GPU memory (GB)</text>
   <text x="180.0" y="131.0" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="400">Full fine-tune</text>
@@ -584,10 +584,10 @@ save_edit("model.layers.27.mlp.down_proj.weight", W)</code></pre>
 <li>Takehi, Teoh, Zhang and Khattab (MIT CSAIL) 2026, <a href='https://rikiyat.github.io/blog/weight-space-programming/' target='_blank' rel='noopener noreferrer'>Sparks of Weight-Space Programming</a>, the LLM weight-editing experiment</li>
 <li><a href='https://bird-bench.github.io/' target='_blank' rel='noopener noreferrer'>BIRD text-to-SQL benchmark</a></li>
 <li><a href='https://huggingface.co/Qwen/Qwen2.5-Coder-1.5B-Instruct' target='_blank' rel='noopener noreferrer'>Qwen2.5-Coder-1.5B-Instruct</a> on Hugging Face</li>
-<li>Part 1 of this series: <a href='#/blog/finetuning_series_1_methods'>Fine-tuning, explained: 5 ways to teach a model</a></li>
-<li>Part 2 of this series: <a href='#/blog/finetuning_series_2_how'>How I tested them: text-to-SQL on BIRD with one laptop GPU</a></li>
+<li>Part 1 of this series: <a href='#/blog/finetuning_series_1_methods'>Fine-tuning explained: 5 ways to teach an AI model</a></li>
+<li>Part 2 of this series: <a href='#/blog/finetuning_series_2_how'>How I tested them: teaching AI to write SQL</a></li>
 </ul>
-<p><strong>Previous:</strong> <a href='#/blog/finetuning_series_2_how'>Part 2: How I tested them</a>. Or start from the beginning with <a href='#/blog/finetuning_series_1_methods'>Part 1: Fine-tuning, explained</a>.</p>
+<p><strong>Previous:</strong> <a href='#/blog/finetuning_series_2_how'>Part 2: How I tested them</a>. Or start from the beginning with <a href='#/blog/finetuning_series_1_methods'>Part 1: Fine-tuning explained</a>.</p>
 
 `,
 };

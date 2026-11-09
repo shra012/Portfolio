@@ -1,17 +1,17 @@
 const post = {
   id: "finetuning_series_2_how",
-  title: "How I tested them: text-to-SQL on BIRD with one laptop GPU",
+  title: "How I tested them: teaching AI to write SQL",
   date: "November 07, 2026",
   part: 2,
-  aiSummary: "Part 2 of the fine-tuning series walks through the full experiment: turning BIRD questions into prompts and training rows, grading SQL by running it in a read-only sandbox, and training full fine-tuning, LoRA, LoRA-FA, QLoRA and TinyLoRA under identical rules. It also covers the TinyLoRA GRPO loop with vLLM and the memory lessons that got the whole pipeline running in under 6 hours on a 16 GB laptop GPU.",
+  aiSummary: "Part 2 of the fine-tuning series walks through the full experiment: turning BIRD questions into prompts and training rows, grading SQL by running it in a read-only sandbox, and training full fine-tuning, LoRA, LoRA-FA, QLoRA and TinyLoRA under identical rules. It also covers the TinyLoRA GRPO loop with vLLM and the memory lessons that got the whole pipeline running in under 6 hours.",
   image: "blog/text2sql-peft/hero_part2.png",
   tags: ["Fine-tuning", "LoRA", "QLoRA", "TinyLoRA", "GRPO", "Text-to-SQL", "BIRD", "vLLM", "LLM"],
   type: 'Article',
   content: `
 <p><em>This is part 2 of 3. <a href='#/blog/finetuning_series_1_methods'>Part 1</a> explained the five fine-tuning methods. <a href='#/blog/finetuning_series_3_results'>Part 3</a> has the results.</em></p>
 <p><em>About 16 min read.</em></p>
-<blockquote><p><strong>In short</strong></p><ul><li>I tested all five methods on text-to-SQL (BIRD), grading each model by running its SQL and comparing the rows with the correct query's rows.</li><li>Every supervised run got the same 2,000 questions, 125 steps and loss only on the SQL; TinyLoRA also got a 75-step GRPO run with vLLM in the loop.</li><li>Memory was the hard part: on a 16 GB laptop GPU, overflow silently made jobs 10x slower, so a small scheduler ran one job at a time, about 6 hours in all.</li></ul></blockquote>
-<p><a href='#/blog/finetuning_series_1_methods'>Part 1</a> walked through the five methods from a viral infographic, ending with the claim that TinyLoRA can change a model's behavior by training only 13 numbers. To check it, I ran all five on one task, with one model, on one laptop GPU. This post is the "how". The code is simplified but does what the real code does.</p>
+<blockquote><p><strong>In short</strong></p><ul><li>I tested all five methods on text-to-SQL (BIRD), grading each model by running its SQL and comparing the rows with the correct query's rows.</li><li>Every supervised run got the same 2,000 questions, 125 steps and loss only on the SQL; TinyLoRA also got a 75-step GRPO run with vLLM in the loop.</li><li>Memory was the hard part: on a 16 GB GPU, overflow silently made jobs 10x slower, so a small scheduler ran one job at a time, about 6 hours in all.</li></ul></blockquote>
+<p><a href='#/blog/finetuning_series_1_methods'>Part 1</a> walked through the five methods from a viral infographic, ending with the claim that TinyLoRA can change a model's behavior by training only 13 numbers. To check it, I ran all five on one task with one model. This post is the "how". The code is simplified but does what the real code does.</p>
 
 <h3>The task: text-to-SQL</h3>
 <p>Text-to-SQL means: someone asks a question in plain English, the model writes a SQL query, and the database answers it.</p>
@@ -26,7 +26,7 @@ const post = {
 <h3>The setup at a glance</h3>
 <div style="overflow-x:auto;margin:1.9rem 0"><table><thead><tr><th>Piece</th><th>What I used</th></tr></thead><tbody>
 <tr><td>Model</td><td><code>Qwen/Qwen2.5-Coder-1.5B-Instruct</code>: 1.54 billion parameters, 28 layers, hidden size 1,536</td></tr>
-<tr><td>GPU</td><td>one NVIDIA RTX 3080 Ti Laptop GPU, 16 GB, running under WSL2 (Linux running inside Windows)</td></tr>
+<tr><td>GPU</td><td>NVIDIA RTX 3080 Ti, 16 GB, running under WSL2 (Linux running inside Windows)</td></tr>
 <tr><td>Benchmark</td><td><a href='https://bird-bench.github.io/' target='_blank' rel='noopener noreferrer'>BIRD</a> dev set (the cleaned 2024-06-27 release): 1,534 questions over 11 databases</td></tr>
 <tr><td>Training data</td><td>a fixed set of 2,000 questions from BIRD's training set</td></tr>
 <tr><td>Score</td><td>execution accuracy (EX): does the model's SQL return the same rows as the correct SQL?</td></tr>
@@ -345,9 +345,9 @@ conn.set_progress_handler(lambda: 1 if time.monotonic() &gt; deadline else 0, 10
 
 <h3>The GRPO run</h3>
 <p>The TinyLoRA paper says its 13 parameters work best with the reinforcement learning method <strong>GRPO</strong>, which <a href='#/blog/finetuning_series_1_methods'>part 1</a> explains step by step. Here is what running it looked like.</p>
-<div style="overflow-x:auto;margin:1.9rem 0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 474" style="width:100%;min-width:660px;height:auto;display:block" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" role="img" aria-label="One GRPO step, sharing one GPU">
+<div style="overflow-x:auto;margin:1.9rem 0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 474" style="width:100%;min-width:660px;height:auto;display:block" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" role="img" aria-label="One GRPO step">
   <rect width="1000" height="474" rx="14" fill="#FCFCFB" stroke="#E2E8F0" stroke-width="2"/>
-  <text x="28" y="40" font-size="19" font-weight="700" fill="#0b0b0b">One GRPO step, sharing one GPU</text>
+  <text x="28" y="40" font-size="19" font-weight="700" fill="#0b0b0b">One GRPO step</text>
   <text x="28" y="64" font-size="14" fill="#52514e">vLLM and the trainer take turns on the GPU. The SQL grading runs on the CPU.</text>
   <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/></marker></defs>
   <rect x="20" y="132" width="960" height="96" rx="10" fill="#F8FAFC" stroke="#E2E8F0"/>
@@ -437,13 +437,13 @@ args = GRPOConfig(
 <p>Step 5 needed custom code. TRL can't push my custom TinyLoRA layers into vLLM, so I override one method that bakes <code>W'</code> into the 196 matrices and copies them over.</p>
 <p>In total: 75 steps, 600 questions, 4,800 graded answers, about 100 seconds per step, 128 minutes. The questions came from the 2,489 training questions whose prompt fits in 1,024 tokens (shuffled with seed 42), a different pool from the SFT runs, because GRPO needed shorter prompts.</p>
 
-<h3>Making it fit on one laptop GPU</h3>
+<h3>Making it fit in memory</h3>
 <p>I expected to press go and wait. Instead much of the work was finding out why things were slow, and every answer was about memory. Here is the diary.</p>
 <h4>The budget</h4>
 <p>The chart shows each job's memory two ways: PyTorch's peak (dark) and <strong>whole-card usage</strong> (light, which also counts memory libraries manage outside PyTorch). For GRPO only the PyTorch peak was logged, including vLLM's copy of the model.</p>
-<div style="overflow-x:auto;margin:1.9rem 0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 470" style="width:100%;min-width:660px;height:auto;display:block" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" role="img" aria-label="How much of the 16 GB card each job used">
+<div style="overflow-x:auto;margin:1.9rem 0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 470" style="width:100%;min-width:660px;height:auto;display:block" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" role="img" aria-label="How much GPU memory each job used">
   <rect width="1000" height="470" rx="14" fill="#FCFCFB" stroke="#E2E8F0" stroke-width="2"/>
-  <text x="28" y="40" font-size="19" font-weight="700" fill="#0b0b0b">How much of the 16 GB card each job used</text>
+  <text x="28" y="40" font-size="19" font-weight="700" fill="#0b0b0b">How much GPU memory each job used</text>
   <text x="28" y="64" font-size="14" fill="#52514e">Any single job fits easily. The trouble starts when two of them share the card.</text>
   <rect x="28" y="84" width="14" height="14" rx="3" fill="#2a78d6"/>
   <text x="48.0" y="96.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="400">PyTorch peak</text>
