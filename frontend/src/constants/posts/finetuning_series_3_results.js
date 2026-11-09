@@ -584,7 +584,7 @@ save_edit("model.layers.27.mlp.down_proj.weight", W)</code></pre>
 <li>Takehi, Teoh, Zhang and Khattab (MIT CSAIL) 2026, <a href='https://rikiyat.github.io/blog/weight-space-programming/' target='_blank' rel='noopener noreferrer'>Sparks of Weight-Space Programming</a>, the LLM weight-editing experiment</li>
 <li><a href='https://bird-bench.github.io/' target='_blank' rel='noopener noreferrer'>BIRD text-to-SQL benchmark</a></li>
 <li><a href='https://huggingface.co/Qwen/Qwen2.5-Coder-1.5B-Instruct' target='_blank' rel='noopener noreferrer'>Qwen2.5-Coder-1.5B-Instruct</a> on Hugging Face</li>
-<li>Part 1 of this series: <a href='#/blog/finetuning_series_1_methods'>Fine-tuning explained: 5 ways to teach an AI model</a></li>
+<li>Part 1 of this series: <a href='#/blog/finetuning_series_1_methods'>Fine-tuning explained: 6 ways to teach an AI model</a></li>
 <li>Part 2 of this series: <a href='#/blog/finetuning_series_2_how'>How I tested them: teaching AI to write SQL</a></li>
 </ul>
 <p><strong>Previous:</strong> <a href='#/blog/finetuning_series_2_how'>Part 2: How I tested them</a>. Or start from the beginning with <a href='#/blog/finetuning_series_1_methods'>Part 1: Fine-tuning explained</a>.</p>
