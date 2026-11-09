@@ -60,4 +60,4 @@ A modern, full-stack portfolio showcasing technical expertise through interactiv
 
 ---
 
-*This project demonstrates end-to-end software development skills, from UI/UX design to backend architecture and deployment automation - showcasing readiness for senior engineering roles.*
+*This project demonstrates end-to-end software development skills, from UI/UX design to backend architecture and deployment automation - showcasing my software skills.*
