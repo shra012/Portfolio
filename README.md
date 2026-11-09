@@ -2,6 +2,18 @@
 
 A modern, full-stack portfolio showcasing technical expertise through interactive 3D experiences and robust backend architecture.
 
+[![Portfolio home page: "Hi, I'm Shravan" headline with a 3D desk and computer scene](docs/images/home.jpg)](https://shra012.github.io/Portfolio)
+
+## Screenshots
+
+**Projects**: grouped into AI/ML, Data Engineering and Software tabs, each card linking to code and a demo, video or write-up.
+
+![Projects section with category tabs and project cards for WildTrace, text2sql-peft and Sentinel Machines](docs/images/projects.jpg)
+
+**Blog ([The AI Ledger](https://shra012.github.io/Portfolio/#/blog))**: technical deep dives, each with a short AI summary.
+
+![Blog page showing the three-part fine-tuning series](docs/images/blog.jpg)
+
 ## Why This Project
 
 **Problem Solved**: Traditional portfolios fail to demonstrate real-world engineering skills. This project bridges that gap by implementing production-grade solutions while creating an engaging user experience.
